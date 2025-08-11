@@ -1,0 +1,247 @@
+task:
+  translate
+dataset:
+  name: "ProofWriter" # ProntoQA # FOLIO
+data_path:
+  data/ProofWriter/dev.json
+output_dir:
+  outputs/deepseek/ProofWriter/translation
+prompts:
+  # ${chat_history} 之前的放在system, 之后的放在user
+  prompt: &prompt |-
+    You are given a logic problem including a context and a question as follows:
+    Context: ${context}
+    Question: ${question}
+    From your perspective, please give your understanding of the question and context,and discuss with your opponent about the parsing of the question.
+    Think about the advantages and disadvantages of each language, and keep the original format of each language, correct the current language by referring to other languages.
+    Here is your discussion history:
+    ${chat_history} 
+    ${role_description}
+    ${turn_specific_instruction}
+
+llm_config:
+  # 模式选择: 'api' 使用API调用, 'local' 使用本地LLM
+  mode: 'api'  # 可选: 'api' 或 'local'
+  
+  # API凭证配置
+  api_credentials:
+    openai_api_key: "sk-733e47bc35da4b49b0bc7ca99ede48f8"
+    openai_base_url: "https://api.deepseek.com/v1"
+  
+  # API模式配置
+  api_settings:
+    model: "deepseek-chat"    # API调用的模型名称，直接传递给OpenAI兼容的API, 在 agentverse/llms/openai.py 中，通过 client.chat.completions.create(messages=messages, **self.args.dict()) 调用时，model 字段会被传递给API服务器
+    llm_type: "gpt-4.1" #"deepseek-chat"  # LLM类选择：在 agentverse/initialization.py 的 load_llm() 函数中，通过 llm_registry.build(llm_type, **llm_config) 来选择具体的LLM实现类   注册系统：通过装饰器 @llm_registry.register() 将不同的LLM类注册到系统中
+    temperature: 0
+    max_tokens: 1250
+    max_retry: 2
+    
+  # 本地LLM模式配置  
+  local_settings:
+    model_path: "/mnt/sdb/ssuser/llm_models/Deepseek-14B"
+    llm_type: "deepseek-local"
+    temperature: 0.7
+    top_p: 0.9
+    top_k: 50
+    max_tokens: 5120
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.9
+    max_model_len: 4096
+    trust_remote_code: true
+    max_retry: 3
+
+environment:
+  env_type: llm_eval
+  max_turns: 3    # 必须是3的倍数
+  rule:
+    order:
+      type: sequential
+    visibility:
+      type: all
+    selector:
+      type: basic
+    updater:
+      type: basic
+    describer:
+      type: basic
+
+agents:
+  -
+    agent_type: llm_eval_multi
+    name: LP translator
+    final_prompt_to_use: |-
+      After discussion, now you need to give your final output. 
+      Please ensure that the output format has no syntax error, such as unclosed parentheses, etc.
+      Return **only** Predicates, Facts, Rules, and Query.
+    normal_turn_instruction: |-
+      Now it's your turn to speak. Please speak as concisely and clearly as possible, ${agent_name} !
+    role_description: |-
+      You are given a problem description and a question. The task is to:
+      1. define all the predicates in the problem
+      2. parse the problem into logic rules based on the defined predicates
+      3. write all the facts mentioned in the problem
+      4. parse the question into the logic form (Use && to represent AND, and you cannot use 'NOT' or other negations)
+      ----------------
+      Example:
+      Context: Each jompus is fruity.
+      (... more context here ...)
+      Rompuses are zumpuses. Alex is a tumpus.
+
+      Question: True or false: Alex is not shy.
+
+      Predicates:
+      Jompus($x, bool) ::: Does x belong to Jompus?
+      (... more predicates here ...)
+      Zumpus($x, bool) ::: Does x belong to Zumpuses?
+
+      Facts:
+      Tumpuses(Alex, True)
+
+      Rules:
+      Jompus($x, True) >>> Fruity($x, True)
+      (... more rules here ...)
+      Dumpus($x, True) >>> Rompus($x, True)
+
+      Query:
+      Shy(Alex, False)
+    memory:
+      memory_type: chat_history
+    memory_manipulator:
+      memory_manipulator_type: basic
+    prompt_template: *prompt
+  -
+    agent_type: llm_eval_multi
+    name: FOL translator
+    final_prompt_to_use: |-
+      After discussion, now you need to give your final output.
+      Please ensure that the output format has no syntax error, such as unclosed parentheses, etc.
+      Return **only** Predicates, Premises, and Conclusion.
+      Do not add ID numbers such as 1., 2., etc.
+    normal_turn_instruction: |-
+      Now it's your turn to speak. Please speak as concisely and clearly as possible, ${agent_name} !
+    role_description: |-
+       Task Description: Given a problem description and a question. The task is to parse the problem and the question into first-order logic formulas. The grammar of first-order logic is defined as follows:
+
+        logical conjunction: expr1 ∧ expr2
+        logical disjunction: expr1 ∨ expr2
+        logical exclusive disjunction: expr1 ⊕ expr2
+        logical negation: ¬expr1
+        expr1 implies expr2: expr1 → expr2
+        expr1 if and only if expr2: expr1 ↔ expr2
+        logical universal quantification: ∀ x
+        logical existential quantification: ∃ x
+        Output format: logic form ::: description
+
+        ---------------
+        Example：
+        Context: All people who regularly drink coffee are
+        dependent on caffeine.
+        (... more context here ...)
+        If Rina is not a person dependent on caffeine and a
+        student, then Rina is either a person dependent
+        on caffeine and a student, or a person dependent
+        on caffeine nor a student, or neither a person
+        dependent on caffeine nor a student.
+
+        Question: Based on the above information, is the
+        following statement true, false, or uncertain?
+        Rina is either a person who jokes about being
+        addicted to caffeine or is unaware that caffeine
+        is a drug.
+
+        Predicates:
+        Dependent(x) ::: x is a person dependent on caffeine
+        (... more predicates here ...)
+        Student(x) ::: x is a student
+
+        Premises:
+        ∀x (Drinks(x) → Dependent(x)) ::: All people who
+        regularly drink coffee are dependent on caffeine.
+
+        (... more premises here ...)
+        ∀x (Jokes(x) → ¬Unaware(x)) ::: No one who jokes
+        about being addicted to caffeine is unaware that
+        caffeine is a drug.
+
+        Conclusion:
+        Jokes(rina) ⊕ Unaware(rina) ::: Rina is either a
+        person who jokes about being addicted to caffeine
+        or is unaware that caffeine is a drug.into a language that is understandable to the user.
+    memory:
+      memory_type: chat_history
+    memory_manipulator:
+      memory_manipulator_type: basic
+    prompt_template: *prompt
+
+  -
+    agent_type: llm_eval_multi
+    name: SAT translator
+    final_prompt_to_use: |-
+      After discussion, now you need to give your final output. 
+      Please ensure that the output format has no syntax error, such as unclosed parentheses, etc.
+      Return **only** the declarations, constraints, and options. 
+    normal_turn_instruction: |-
+      Now it's your turn to speak. Please speak as concisely and clearly as possible, ${agent_name} !
+    role_description: |-
+      Task Description: You are given a problem description.
+      The task is to parse the problem as a SAT problem using Z3 syntax, defining declarations, constraints, and options.
+        1. Always include all three section headers in order: # Declarations, # Constraints, # Options
+        2. Declarations must follow exact patterns:
+        - name = EnumSort([items, ...])  for non-numeric items
+        - name = IntSort([numbers, ...])  for numeric items
+        - name = Function([types] -> [return_type])
+        3. Constraints support:
+        - Direct expressions with ==, !=, <=, >=, <, >, Implies(), And(), Or(), Not()
+        - ForAll([var:type, ...], expr) and Exists([var:type, ...], expr)
+        - Count([var:type], condition)
+        - Distinct([var:type], expr)
+        4. Options must use predefined functions:
+        - is_valid(), is_sat(), is_unsat()
+        5. Add explanation with :::
+        6. Avoid:
+        - Add # in any other places apart from three section headers
+        - Add any other unnecessary comment or dashes
+
+      -----------
+      Example：
+      Context: Bob is cold. Bob is quiet. Bob is red. Bob is smart. Charlie is kind. Charlie is quiet. Charlie is red. Charlie is rough. Dave is cold. Dave is kind. Dave is smart. Fiona is quiet. If something is quiet and cold then it is smart. Red, cold things are round. If something is kind and rough then it is red. All quiet things are rough. Cold, smart things are red. If something is rough then it is cold. All red things are rough. If Dave is smart and Dave is kind then Dave is quiet.
+      Question: True or false: Charlie is kind.
+
+      # Declarations
+      objects = EnumSort([Bob, Charlie, Dave, Fiona])
+      attributes = EnumSort([cold, quiet, red, smart, kind, rough, round])
+      has_attribute = Function([objects, attributes] -> [bool])
+      
+      # Constraints
+      has_attribute(Bob, cold) == True ::: Bob is cold.
+      has_attribute(Bob, quiet) == True ::: Bob is quiet.
+      has_attribute(Bob, red) == True ::: Bob is red.
+      has_attribute(Bob, smart) == True ::: Bob is smart.
+      has_attribute(Charlie, kind) == True ::: Charlie is kind.
+      has_attribute(Charlie, quiet) == True ::: Charlie is quiet.
+      has_attribute(Charlie, red) == True ::: Charlie is red.
+      has_attribute(Charlie, rough) == True ::: Charlie is rough.
+      has_attribute(Dave, cold) == True ::: Dave is cold.
+      has_attribute(Dave, kind) == True ::: Dave is kind.
+      has_attribute(Dave, smart) == True ::: Dave is smart.
+      has_attribute(Fiona, quiet) == True ::: Fiona is quiet.
+      ForAll([x:objects], Implies(And(has_attribute(x, quiet) == True, has_attribute(x, cold) == True), has_attribute(x, smart) == True)) ::: If something is quiet and cold then it is smart.
+      ForAll([x:objects], Implies(And(has_attribute(x, red) == True, has_attribute(x, cold) == True), has_attribute(x, round) == True)) ::: Red, cold things are round.
+      ForAll([x:objects], Implies(And(has_attribute(x, kind) == True, has_attribute(x, rough) == True), has_attribute(x, red) == True)) ::: If something is kind and rough then it is red.
+      ForAll([x:objects], Implies(has_attribute(x, quiet) == True, has_attribute(x, rough) == True)) ::: All quiet things are rough.
+      ForAll([x:objects], Implies(And(has_attribute(x, cold) == True, has_attribute(x, smart) == True), has_attribute(x, red) == True)) ::: Cold, smart things are red.
+      ForAll([x:objects], Implies(has_attribute(x, rough) == True, has_attribute(x, cold) == True)) ::: If something is rough then it is cold.
+      ForAll([x:objects], Implies(has_attribute(x, red) == True, has_attribute(x, rough) == True)) ::: All red things are rough.
+      Implies(And(has_attribute(Dave, smart) == True, has_attribute(Dave, kind) == True), has_attribute(Dave, quiet) == True) ::: If Dave is smart and Dave is kind then Dave is quiet.
+      
+      # Options
+      is_valid(has_attribute(Charlie, kind) == True) ::: Charlie is kind is True (A).
+      is_unsat(has_attribute(Charlie, kind) == True) ::: Charlie is kind is False (B).
+
+    memory:
+      memory_type: chat_history
+    memory_manipulator:
+      memory_manipulator_type: basic
+    prompt_template: *prompt
+
+tools: ~ 

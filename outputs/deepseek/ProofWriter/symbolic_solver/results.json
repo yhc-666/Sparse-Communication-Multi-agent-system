@@ -1,0 +1,653 @@
+[
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-1041_Q1",
+    "context": "Bob is cold. Bob is quiet. Bob is red. Bob is smart. Charlie is kind. Charlie is quiet. Charlie is red. Charlie is rough. Dave is cold. Dave is kind. Dave is smart. Fiona is quiet. If something is quiet and cold then it is smart. Red, cold things are round. If something is kind and rough then it is red. All quiet things are rough. Cold, smart things are red. If something is rough then it is cold. All red things are rough. If Dave is smart and Dave is kind then Dave is quiet.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Charlie is kind.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Cold($x, bool) ::: Is x cold?\n  Quiet($x, bool) ::: Is x quiet?\n  Red($x, bool) ::: Is x red?\n  Smart($x, bool) ::: Is x smart?\n  Kind($x, bool) ::: Is x kind?\n  Rough($x, bool) ::: Is x rough?\n  Round($x, bool) ::: Is x round?\nWe have following known facts from the context:\n  Cold(Bob, True)\n  Quiet(Bob, True)\n  Red(Bob, True)\n  Smart(Bob, True)\n  Kind(Charlie, True)\n  Quiet(Charlie, True)\n  Red(Charlie, True)\n  Rough(Charlie, True)\n  Cold(Dave, True)\n  Kind(Dave, True)\n  Smart(Dave, True)\n  Quiet(Fiona, True)\nWe have following known rules from the context:\n  rule1: Quiet($x, True) && Cold($x, True) >>> Smart($x, True)\n  rule2: Red($x, True) && Cold($x, True) >>> Round($x, True)\n  rule3: Kind($x, True) && Rough($x, True) >>> Red($x, True)\n  rule4: Quiet($x, True) >>> Rough($x, True)\n  rule5: Cold($x, True) && Smart($x, True) >>> Red($x, True)\n  rule6: Rough($x, True) >>> Cold($x, True)\n  rule7: Red($x, True) >>> Rough($x, True)\n  rule8: Smart($x, True) && Kind($x, True) >>> Quiet($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Quiet($x, True) && Cold($x, True) >>> Smart($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Smart('Bob', True)\nUnbind $x\nBind $x to 'Charlie'\nUnbind $x\nBind $x to 'Fiona'\nUnbind $x\nFinish implied with rule1\nUse rule2: Red($x, True) && Cold($x, True) >>> Round($x, True)\nBind $x to 'Bob'\nObtain a new implied fact: Round('Bob', True)\nUnbind $x\nBind $x to 'Charlie'\nUnbind $x\nFinish implied with rule2\nUse rule3: Kind($x, True) && Rough($x, True) >>> Red($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Red('Charlie', True)\nUnbind $x\nBind $x to 'Dave'\nUnbind $x\nFinish implied with rule3\nUse rule4: Quiet($x, True) >>> Rough($x, True)\nBind $x to 'Bob'\nObtain a new implied fact: Rough('Bob', True)\nReuse rule3: Kind($x, True) && Rough($x, True) >>> Red($x, True)\nBind $x to 'Bob'\nFinish implied with rule3\nUse rule6: Rough($x, True) >>> Cold($x, True)\nFinish implied with rule6\nReuse rule3: Kind($x, True) && Rough($x, True) >>> Red($x, True)\nBind $x to 'Fiona'\nFinish implied with rule3\nReuse rule6: Rough($x, True) >>> Cold($x, True)\nFinish implied with rule6\nFinish implied with rule4\nUse rule5: Cold($x, True) && Smart($x, True) >>> Red($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Red('Bob', True)\nUnbind $x\nBind $x to 'Dave'\nObtain a new implied fact: Red('Dave', True)\nReuse rule2: Red($x, True) && Cold($x, True) >>> Round($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Round('Dave', True)\nFinish implied with rule2\nUse rule7: Red($x, True) >>> Rough($x, True)\nFinish implied with rule7\nFinish implied with rule5\nReuse rule6: Rough($x, True) >>> Cold($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Cold('Charlie', True)\nReuse rule1: Quiet($x, True) && Cold($x, True) >>> Smart($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Smart('Charlie', True)\nReuse rule5: Cold($x, True) && Smart($x, True) >>> Red($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Red('Charlie', True)\nFinish implied with rule5\nUse rule8: Smart($x, True) && Kind($x, True) >>> Quiet($x, True)\nFinish implied with rule8\nFinish implied with rule1\nReuse rule2: Red($x, True) && Cold($x, True) >>> Round($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Round('Charlie', True)\nFinish implied with rule2\nReuse rule5: Cold($x, True) && Smart($x, True) >>> Red($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Red('Charlie', True)\nFinish implied with rule5\nReuse rule1: Quiet($x, True) && Cold($x, True) >>> Smart($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Smart('Fiona', True)\nReuse rule5: Cold($x, True) && Smart($x, True) >>> Red($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Red('Fiona', True)\nReuse rule2: Red($x, True) && Cold($x, True) >>> Round($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Round('Fiona', True)\nFinish implied with rule2\nReuse rule7: Red($x, True) >>> Rough($x, True)\nFinish implied with rule7\nFinish implied with rule5\nReuse rule8: Smart($x, True) && Kind($x, True) >>> Quiet($x, True)\nFinish implied with rule8\nFinish implied with rule1\nReuse rule2: Red($x, True) && Cold($x, True) >>> Round($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Round('Fiona', True)\nFinish implied with rule2\nReuse rule5: Cold($x, True) && Smart($x, True) >>> Red($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Red('Fiona', True)\nFinish implied with rule5\nFinish implied with rule6\nReuse rule7: Red($x, True) >>> Rough($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Rough('Bob', True)\nUnbind $x\nBind $x to 'Charlie'\nObtain an already known or implied fact: Rough('Charlie', True)\nUnbind $x\nBind $x to 'Dave'\nObtain a new implied fact: Rough('Dave', True)\nReuse rule3: Kind($x, True) && Rough($x, True) >>> Red($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Red('Dave', True)\nFinish implied with rule3\nReuse rule6: Rough($x, True) >>> Cold($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Cold('Dave', True)\nFinish implied with rule6\nFinish implied with rule7\nReuse rule8: Smart($x, True) && Kind($x, True) >>> Quiet($x, True)\nBind $x to 'Bob'\nUnbind $x\nBind $x to 'Dave'\nObtain a new implied fact: Quiet('Dave', True)\nReuse rule1: Quiet($x, True) && Cold($x, True) >>> Smart($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Smart('Dave', True)\nFinish implied with rule1\nReuse rule4: Quiet($x, True) >>> Rough($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Rough('Dave', True)\nFinish implied with rule4\nFinish implied with rule8\nAll newly implied Facts: Cold('Charlie', True), Quiet('Dave', True), Red('Dave', True), Red('Fiona', True), Rough('Bob', True), Rough('Dave', True), Round('Bob', True), Round('Charlie', True), Round('Dave', True), Round('Fiona', True), Smart('Charlie', True), Smart('Fiona', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_RelNeg-OWA-D5-81_Q11",
+    "context": "The cat eats the squirrel. The cat sees the squirrel. The cow eats the squirrel. The cow sees the cat. The rabbit is round. The rabbit sees the cat. The squirrel eats the rabbit. The squirrel is cold. The squirrel needs the rabbit. The squirrel sees the cat. If someone sees the cat and they are not green then they see the cow. If the rabbit is kind and the rabbit sees the squirrel then the squirrel needs the rabbit. Rough people are cold. If someone sees the rabbit then they are not round. If someone sees the squirrel and they are not green then they need the squirrel. If someone eats the cow then they see the rabbit. If someone eats the squirrel then they are rough. If someone is cold then they eat the cow.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? The cat is not round.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "invalid syntax (rules.krb, line 4)"
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-1284_Q8",
+    "context": "Anne is furry. Anne is nice. Anne is smart. Bob is young. Erin is nice. Harry is smart. Harry is young. Young things are furry. Nice, furry things are green. All green things are nice. Nice, green things are big. All green things are smart. If something is big and young then it is round. All green things are big. If Harry is young then Harry is furry. Furry, smart things are nice.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Harry is not green.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "B",
+    "roles": {
+      "LP": {
+        "predict": "B",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Furry($x, bool) ::: Is x furry?\n  Nice($x, bool) ::: Is x nice?\n  Smart($x, bool) ::: Is x smart?\n  Young($x, bool) ::: Is x young?\n  Green($x, bool) ::: Is x green?\n  Big($x, bool) ::: Is x big?\n  Round($x, bool) ::: Is x round?\nWe have following known facts from the context:\n  Furry(Anne, True)\n  Nice(Anne, True)\n  Smart(Anne, True)\n  Young(Bob, True)\n  Nice(Erin, True)\n  Smart(Harry, True)\n  Young(Harry, True)\nWe have following known rules from the context:\n  rule1: Young($x, True) >>> Furry($x, True)\n  rule2: Nice($x, True) && Furry($x, True) >>> Green($x, True)\n  rule3: Green($x, True) >>> Nice($x, True)\n  rule4: Nice($x, True) && Green($x, True) >>> Big($x, True)\n  rule5: Green($x, True) >>> Smart($x, True)\n  rule6: Big($x, True) && Young($x, True) >>> Round($x, True)\n  rule7: Green($x, True) >>> Big($x, True)\n  rule8: Young(Harry, True) >>> Furry(Harry, True)\n  rule9: Furry($x, True) && Smart($x, True) >>> Nice($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Young($x, True) >>> Furry($x, True)\nBind $x to 'Bob'\nObtain a new implied fact: Furry('Bob', True)\nUse rule2: Nice($x, True) && Furry($x, True) >>> Green($x, True)\nFinish implied with rule2\nUse rule9: Furry($x, True) && Smart($x, True) >>> Nice($x, True)\nFinish implied with rule9\nReuse rule2: Nice($x, True) && Furry($x, True) >>> Green($x, True)\nFinish implied with rule2\nReuse rule9: Furry($x, True) && Smart($x, True) >>> Nice($x, True)\nFinish implied with rule9\nFinish implied with rule1\nReuse rule2: Nice($x, True) && Furry($x, True) >>> Green($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Green('Anne', True)\nUse rule3: Green($x, True) >>> Nice($x, True)\nFinish implied with rule3\nUse rule4: Nice($x, True) && Green($x, True) >>> Big($x, True)\nFinish implied with rule4\nUse rule5: Green($x, True) >>> Smart($x, True)\nFinish implied with rule5\nUse rule7: Green($x, True) >>> Big($x, True)\nFinish implied with rule7\nFinish implied with rule2\nReuse rule3: Green($x, True) >>> Nice($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Nice('Anne', True)\nUnbind $x\nFinish implied with rule3\nReuse rule4: Nice($x, True) && Green($x, True) >>> Big($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Big('Anne', True)\nUse rule6: Big($x, True) && Young($x, True) >>> Round($x, True)\nFinish implied with rule6\nFinish implied with rule4\nReuse rule5: Green($x, True) >>> Smart($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Smart('Anne', True)\nUnbind $x\nFinish implied with rule5\nReuse rule6: Big($x, True) && Young($x, True) >>> Round($x, True)\nBind $x to 'Anne'\nUnbind $x\nFinish implied with rule6\nReuse rule7: Green($x, True) >>> Big($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Big('Anne', True)\nUnbind $x\nFinish implied with rule7\nUse rule8: Young(Harry, True) >>> Furry(Harry, True)\nObtain an already known or implied fact: Furry('Harry', True)\nFinish implied with rule8\nReuse rule9: Furry($x, True) && Smart($x, True) >>> Nice($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Nice('Anne', True)\nUnbind $x\nBind $x to 'Bob'\nUnbind $x\nBind $x to 'Harry'\nObtain a new implied fact: Nice('Harry', True)\nReuse rule2: Nice($x, True) && Furry($x, True) >>> Green($x, True)\nBind $x to 'Harry'\nObtain a new implied fact: Green('Harry', True)\nReuse rule3: Green($x, True) >>> Nice($x, True)\nBind $x to 'Harry'\nObtain an already known or implied fact: Nice('Harry', True)\nFinish implied with rule3\nReuse rule4: Nice($x, True) && Green($x, True) >>> Big($x, True)\nBind $x to 'Harry'\nObtain a new implied fact: Big('Harry', True)\nReuse rule6: Big($x, True) && Young($x, True) >>> Round($x, True)\nBind $x to 'Harry'\nObtain a new implied fact: Round('Harry', True)\nFinish implied with rule6\nFinish implied with rule4\nReuse rule5: Green($x, True) >>> Smart($x, True)\nBind $x to 'Harry'\nObtain an already known or implied fact: Smart('Harry', True)\nFinish implied with rule5\nReuse rule7: Green($x, True) >>> Big($x, True)\nBind $x to 'Harry'\nObtain an already known or implied fact: Big('Harry', True)\nFinish implied with rule7\nFinish implied with rule2\nReuse rule4: Nice($x, True) && Green($x, True) >>> Big($x, True)\nBind $x to 'Harry'\nObtain an already known or implied fact: Big('Harry', True)\nFinish implied with rule4\nFinish implied with rule9\nAll newly implied Facts: Big('Anne', True), Big('Harry', True), Furry('Bob', True), Green('Anne', True), Green('Harry', True), Nice('Harry', True), Round('Harry', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-585_Q19",
+    "context": "Anne is round. Bob is red. Bob is smart. Erin is furry. Erin is red. Erin is rough. Erin is smart. Fiona is big. Fiona is furry. Fiona is smart. All smart things are furry. All furry things are red. All round things are rough. If Bob is white then Bob is furry. All red, rough things are big. All rough things are smart. If Fiona is furry then Fiona is red. If Bob is round and Bob is big then Bob is furry. If Fiona is red and Fiona is white then Fiona is smart.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Bob is not white.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Round($x, bool) ::: Is x round?\n  Red($x, bool) ::: Is x red?\n  Smart($x, bool) ::: Is x smart?\n  Furry($x, bool) ::: Is x furry?\n  Rough($x, bool) ::: Is x rough?\n  Big($x, bool) ::: Is x big?\n  White($x, bool) ::: Is x white?\nWe have following known facts from the context:\n  Round(Anne, True)\n  Red(Bob, True)\n  Smart(Bob, True)\n  Furry(Erin, True)\n  Red(Erin, True)\n  Rough(Erin, True)\n  Smart(Erin, True)\n  Big(Fiona, True)\n  Furry(Fiona, True)\n  Smart(Fiona, True)\nWe have following known rules from the context:\n  rule1: Smart($x, True) >>> Furry($x, True)\n  rule2: Furry($x, True) >>> Red($x, True)\n  rule3: Round($x, True) >>> Rough($x, True)\n  rule4: White(Bob, True) >>> Furry(Bob, True)\n  rule5: Red($x, True) && Rough($x, True) >>> Big($x, True)\n  rule6: Rough($x, True) >>> Smart($x, True)\n  rule7: Furry(Fiona, True) >>> Red(Fiona, True)\n  rule8: Round(Bob, True) && Big(Bob, True) >>> Furry(Bob, True)\n  rule9: Red(Fiona, True) && White(Fiona, True) >>> Smart(Fiona, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Smart($x, True) >>> Furry($x, True)\nBind $x to 'Bob'\nObtain a new implied fact: Furry('Bob', True)\nUse rule2: Furry($x, True) >>> Red($x, True)\nFinish implied with rule2\nUse rule7: Furry(Fiona, True) >>> Red(Fiona, True)\nFinish implied with rule7\nFinish implied with rule1\nReuse rule2: Furry($x, True) >>> Red($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Red('Erin', True)\nUnbind $x\nBind $x to 'Fiona'\nObtain a new implied fact: Red('Fiona', True)\nUse rule5: Red($x, True) && Rough($x, True) >>> Big($x, True)\nFinish implied with rule5\nUse rule9: Red(Fiona, True) && White(Fiona, True) >>> Smart(Fiona, True)\nFinish implied with rule9\nFinish implied with rule2\nUse rule3: Round($x, True) >>> Rough($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Rough('Anne', True)\nReuse rule5: Red($x, True) && Rough($x, True) >>> Big($x, True)\nFinish implied with rule5\nUse rule6: Rough($x, True) >>> Smart($x, True)\nFinish implied with rule6\nFinish implied with rule3\nUse rule4: White(Bob, True) >>> Furry(Bob, True)\nFinish implied with rule4\nReuse rule5: Red($x, True) && Rough($x, True) >>> Big($x, True)\nBind $x to 'Bob'\nUnbind $x\nBind $x to 'Erin'\nObtain a new implied fact: Big('Erin', True)\nUse rule8: Round(Bob, True) && Big(Bob, True) >>> Furry(Bob, True)\nFinish implied with rule8\nFinish implied with rule5\nReuse rule6: Rough($x, True) >>> Smart($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Smart('Erin', True)\nUnbind $x\nBind $x to 'Anne'\nObtain a new implied fact: Smart('Anne', True)\nReuse rule1: Smart($x, True) >>> Furry($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Furry('Anne', True)\nReuse rule2: Furry($x, True) >>> Red($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Red('Anne', True)\nReuse rule5: Red($x, True) && Rough($x, True) >>> Big($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Big('Anne', True)\nReuse rule8: Round(Bob, True) && Big(Bob, True) >>> Furry(Bob, True)\nFinish implied with rule8\nFinish implied with rule5\nReuse rule9: Red(Fiona, True) && White(Fiona, True) >>> Smart(Fiona, True)\nFinish implied with rule9\nFinish implied with rule2\nReuse rule7: Furry(Fiona, True) >>> Red(Fiona, True)\nFinish implied with rule7\nFinish implied with rule1\nFinish implied with rule6\nReuse rule7: Furry(Fiona, True) >>> Red(Fiona, True)\nObtain an already known or implied fact: Red('Fiona', True)\nFinish implied with rule7\nReuse rule8: Round(Bob, True) && Big(Bob, True) >>> Furry(Bob, True)\nFinish implied with rule8\nReuse rule9: Red(Fiona, True) && White(Fiona, True) >>> Smart(Fiona, True)\nFinish implied with rule9\nAll newly implied Facts: Big('Anne', True), Big('Erin', True), Furry('Anne', True), Furry('Bob', True), Red('Anne', True), Red('Fiona', True), Rough('Anne', True), Smart('Anne', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "C",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "No Output"
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_RelNoneg-OWA-D5-949_Q8",
+    "context": "The bear is green. The bear likes the cat. The bear likes the dog. The bear visits the dog. The cat is young. The cat sees the bear. The cat sees the dog. The cat visits the bear. The cat visits the mouse. The dog is round. The dog likes the bear. The dog likes the mouse. The dog visits the mouse. The mouse is big. The mouse is cold. The mouse is round. If something visits the mouse and the mouse visits the dog then it is cold. If something likes the cat then it visits the dog. If something is cold then it likes the cat. If something is green then it sees the dog. If something likes the mouse then it sees the cat. If something is green and cold then it likes the cat. If something is big and it visits the bear then the bear is green.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? The cat is not cold.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "B",
+    "roles": {
+      "LP": {
+        "predict": "B",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Bear($x, bool) ::: Is x a bear?\n  Green($x, bool) ::: Is x green?\n  Likes($x, $y, bool) ::: Does x like y?\n  Visits($x, $y, bool) ::: Does x visit y?\n  Cat($x, bool) ::: Is x a cat?\n  Young($x, bool) ::: Is x young?\n  Sees($x, $y, bool) ::: Does x see y?\n  Dog($x, bool) ::: Is x a dog?\n  Round($x, bool) ::: Is x round?\n  Mouse($x, bool) ::: Is x a mouse?\n  Big($x, bool) ::: Is x big?\n  Cold($x, bool) ::: Is x cold?\nWe have following known facts from the context:\n  Bear(bear, True)\n  Green(bear, True)\n  Likes(bear, cat, True)\n  Likes(bear, dog, True)\n  Visits(bear, dog, True)\n  Cat(cat, True)\n  Young(cat, True)\n  Sees(cat, bear, True)\n  Sees(cat, dog, True)\n  Visits(cat, bear, True)\n  Visits(cat, mouse, True)\n  Dog(dog, True)\n  Round(dog, True)\n  Likes(dog, bear, True)\n  Likes(dog, mouse, True)\n  Visits(dog, mouse, True)\n  Mouse(mouse, True)\n  Big(mouse, True)\n  Cold(mouse, True)\nWe have following known rules from the context:\n  rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\n  rule2: Likes($x, cat, True) >>> Visits($x, dog, True)\n  rule3: Cold($x, True) >>> Likes($x, cat, True)\n  rule4: Green($x, True) >>> Sees($x, dog, True)\n  rule5: Likes($x, mouse, True) >>> Sees($x, cat, True)\n  rule6: Green($x, True) && Cold($x, True) >>> Likes($x, cat, True)\n  rule7: Big($x, True) && Visits($x, bear, True) >>> Green(bear, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nBind $x to 'cat'\nUnbind $x\nBind $x to 'dog'\nUnbind $x\nFinish implied with rule1\nUse rule2: Likes($x, cat, True) >>> Visits($x, dog, True)\nBind $x to 'bear'\nObtain an already known or implied fact: Visits('bear', 'dog', True)\nUnbind $x\nFinish implied with rule2\nUse rule3: Cold($x, True) >>> Likes($x, cat, True)\nBind $x to 'mouse'\nObtain a new implied fact: Likes('mouse', 'cat', True)\nReuse rule2: Likes($x, cat, True) >>> Visits($x, dog, True)\nBind $x to 'mouse'\nObtain a new implied fact: Visits('mouse', 'dog', True)\nReuse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nBind $x to 'mouse'\nFinish implied with rule1\nReuse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nBind $x to 'cat'\nObtain a new implied fact: Cold('cat', True)\nReuse rule3: Cold($x, True) >>> Likes($x, cat, True)\nBind $x to 'cat'\nObtain a new implied fact: Likes('cat', 'cat', True)\nReuse rule2: Likes($x, cat, True) >>> Visits($x, dog, True)\nBind $x to 'cat'\nObtain a new implied fact: Visits('cat', 'dog', True)\nReuse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nBind $x to 'cat'\nFinish implied with rule1\nReuse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nFinish implied with rule1\nUse rule7: Big($x, True) && Visits($x, bear, True) >>> Green(bear, True)\nFinish implied with rule7\nFinish implied with rule2\nUse rule5: Likes($x, mouse, True) >>> Sees($x, cat, True)\nFinish implied with rule5\nFinish implied with rule3\nUse rule6: Green($x, True) && Cold($x, True) >>> Likes($x, cat, True)\nFinish implied with rule6\nReuse rule3: Cold($x, True) >>> Likes($x, cat, True)\nBind $x to 'dog'\nObtain a new implied fact: Likes('dog', 'cat', True)\nReuse rule2: Likes($x, cat, True) >>> Visits($x, dog, True)\nBind $x to 'dog'\nObtain a new implied fact: Visits('dog', 'dog', True)\nReuse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nBind $x to 'dog'\nFinish implied with rule1\nReuse rule1: Visits($x, mouse, True) && Visits(mouse, dog, True) >>> Cold($x, True)\nFinish implied with rule1\nReuse rule7: Big($x, True) && Visits($x, bear, True) >>> Green(bear, True)\nFinish implied with rule7\nFinish implied with rule2\nReuse rule5: Likes($x, mouse, True) >>> Sees($x, cat, True)\nFinish implied with rule5\nFinish implied with rule3\nReuse rule6: Green($x, True) && Cold($x, True) >>> Likes($x, cat, True)\nFinish implied with rule6\nFinish implied with rule1\nReuse rule7: Big($x, True) && Visits($x, bear, True) >>> Green(bear, True)\nFinish implied with rule7\nFinish implied with rule2\nReuse rule5: Likes($x, mouse, True) >>> Sees($x, cat, True)\nFinish implied with rule5\nFinish implied with rule3\nUse rule4: Green($x, True) >>> Sees($x, dog, True)\nBind $x to 'bear'\nObtain a new implied fact: Sees('bear', 'dog', True)\nUnbind $x\nFinish implied with rule4\nReuse rule5: Likes($x, mouse, True) >>> Sees($x, cat, True)\nBind $x to 'dog'\nObtain a new implied fact: Sees('dog', 'cat', True)\nUnbind $x\nFinish implied with rule5\nReuse rule6: Green($x, True) && Cold($x, True) >>> Likes($x, cat, True)\nBind $x to 'bear'\nUnbind $x\nFinish implied with rule6\nReuse rule7: Big($x, True) && Visits($x, bear, True) >>> Green(bear, True)\nBind $x to 'mouse'\nUnbind $x\nFinish implied with rule7\nAll newly implied Facts: Cold('cat', True), Likes('cat', 'cat', True), Likes('dog', 'cat', True), Likes('mouse', 'cat', True), Sees('bear', 'dog', True), Sees('dog', 'cat', True), Visits('cat', 'dog', True), Visits('dog', 'dog', True), Visits('mouse', 'dog', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "'NoneType' object has no attribute 'rstrip'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_RelNeg-OWA-D5-508_Q2",
+    "context": "The bald eagle is big. The bald eagle is cold. The bald eagle is young. The cat is not kind. The cow is red. The cow likes the bald eagle. The squirrel visits the bald eagle. If something likes the cow then the cow likes the squirrel. All big things are cold. If the squirrel is red then the squirrel is young. If something likes the squirrel then the squirrel is red. If something is young then it likes the cow. If the squirrel likes the cat and the cow does not chase the squirrel then the cat likes the cow. If something visits the squirrel and the squirrel is big then it does not like the squirrel. If something is big then it visits the cow. If something visits the squirrel and it is not red then the squirrel does not visit the bald eagle.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? The cow is not red.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "B",
+    "roles": {
+      "LP": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "invalid syntax (rules.krb, line 28)"
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "parsing error",
+        "error_message": ""
+      },
+      "SAT": {
+        "predict": "C",
+        "reasoning": "",
+        "status_code": "parsing error",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-270_Q8",
+    "context": "Charlie is green. Dave is quiet. Dave is red. Dave is not white. Erin is not big. Erin is not cold. Erin is green. Harry is big. Harry is cold. Harry is green. If someone is red then they are not white. If Charlie is quiet then Charlie is blue. If someone is quiet and red then they are blue. All white people are cold. All green people are quiet. All blue, green people are red. If someone is red and not white then they are big.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Charlie is not red.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "B",
+    "roles": {
+      "LP": {
+        "predict": "B",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Green($x, bool) ::: Is x green?\n  Quiet($x, bool) ::: Is x quiet?\n  Red($x, bool) ::: Is x red?\n  White($x, bool) ::: Is x white?\n  Big($x, bool) ::: Is x big?\n  Cold($x, bool) ::: Is x cold?\n  Blue($x, bool) ::: Is x blue?\nWe have following known facts from the context:\n  Green(Charlie, True)\n  Quiet(Dave, True)\n  Red(Dave, True)\n  White(Dave, False)\n  Big(Erin, False)\n  Cold(Erin, False)\n  Green(Erin, True)\n  Big(Harry, True)\n  Cold(Harry, True)\n  Green(Harry, True)\nWe have following known rules from the context:\n  rule1: Red($x, True) >>> White($x, False)\n  rule2: Quiet(Charlie, True) >>> Blue(Charlie, True)\n  rule3: (Quiet($x, True) && Red($x, True)) >>> Blue($x, True)\n  rule4: White($x, True) >>> Cold($x, True)\n  rule5: Green($x, True) >>> Quiet($x, True)\n  rule6: (Blue($x, True) && Green($x, True)) >>> Red($x, True)\n  rule7: (Red($x, True) && White($x, False)) >>> Big($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Red($x, True) >>> White($x, False)\nBind $x to 'Dave'\nObtain an already known or implied fact: White('Dave', False)\nUnbind $x\nFinish implied with rule1\nUse rule2: Quiet(Charlie, True) >>> Blue(Charlie, True)\nFinish implied with rule2\nUse rule3: (Quiet($x, True) && Red($x, True)) >>> Blue($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Blue('Dave', True)\nUse rule6: (Blue($x, True) && Green($x, True)) >>> Red($x, True)\nFinish implied with rule6\nFinish implied with rule3\nUse rule4: White($x, True) >>> Cold($x, True)\nFinish implied with rule4\nUse rule5: Green($x, True) >>> Quiet($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Quiet('Charlie', True)\nReuse rule2: Quiet(Charlie, True) >>> Blue(Charlie, True)\nObtain a new implied fact: Blue('Charlie', True)\nReuse rule6: (Blue($x, True) && Green($x, True)) >>> Red($x, True)\nFinish implied with rule6\nFinish implied with rule2\nReuse rule3: (Quiet($x, True) && Red($x, True)) >>> Blue($x, True)\nBind $x to 'Charlie'\nFinish implied with rule3\nReuse rule2: Quiet(Charlie, True) >>> Blue(Charlie, True)\nFinish implied with rule2\nReuse rule3: (Quiet($x, True) && Red($x, True)) >>> Blue($x, True)\nBind $x to 'Erin'\nFinish implied with rule3\nReuse rule2: Quiet(Charlie, True) >>> Blue(Charlie, True)\nFinish implied with rule2\nReuse rule3: (Quiet($x, True) && Red($x, True)) >>> Blue($x, True)\nBind $x to 'Harry'\nFinish implied with rule3\nFinish implied with rule5\nReuse rule6: (Blue($x, True) && Green($x, True)) >>> Red($x, True)\nBind $x to 'Dave'\nUnbind $x\nBind $x to 'Charlie'\nObtain a new implied fact: Red('Charlie', True)\nReuse rule1: Red($x, True) >>> White($x, False)\nBind $x to 'Charlie'\nObtain a new implied fact: White('Charlie', False)\nReuse rule4: White($x, True) >>> Cold($x, True)\nBind $x to 'Charlie'\nFinish implied with rule4\nUse rule7: (Red($x, True) && White($x, False)) >>> Big($x, True)\nFinish implied with rule7\nFinish implied with rule1\nReuse rule3: (Quiet($x, True) && Red($x, True)) >>> Blue($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Blue('Charlie', True)\nFinish implied with rule3\nReuse rule7: (Red($x, True) && White($x, False)) >>> Big($x, True)\nFinish implied with rule7\nFinish implied with rule6\nReuse rule7: (Red($x, True) && White($x, False)) >>> Big($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Big('Dave', True)\nUnbind $x\nBind $x to 'Charlie'\nObtain a new implied fact: Big('Charlie', True)\nUnbind $x\nFinish implied with rule7\nAll newly implied Facts: Big('Charlie', True), Big('Dave', True), Blue('Charlie', True), Blue('Dave', True), Quiet('Charlie', True), Red('Charlie', True), White('Charlie', False)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "C",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_RelNoneg-OWA-D5-487_Q19",
+    "context": "The cat chases the lion. The cat is rough. The cat is young. The cat needs the lion. The cat needs the rabbit. The dog is green. The dog is young. The dog likes the cat. The lion is blue. The lion is green. The rabbit chases the lion. The rabbit is blue. The rabbit is rough. The rabbit likes the dog. The rabbit needs the dog. The rabbit needs the lion. If someone chases the lion then they are round. If the lion needs the rabbit and the rabbit chases the dog then the lion likes the dog. If someone is round and they chase the lion then they need the cat. If someone needs the cat and they chase the dog then they like the rabbit. If someone chases the lion and the lion is blue then the lion is round. If someone chases the rabbit then they are rough. If someone is rough and they like the rabbit then the rabbit is young. If the rabbit chases the cat and the cat needs the lion then the rabbit is young. If someone is round and they need the cat then they chase the dog.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? The lion does not like the cat.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Chases($x, $y, bool) ::: Does x chase y?\n  Rough($x, bool) ::: Is x rough?\n  Young($x, bool) ::: Is x young?\n  Needs($x, $y, bool) ::: Does x need y?\n  Likes($x, $y, bool) ::: Does x like y?\n  Color($x, $y, bool) ::: Is x of color y?\n  Round($x, bool) ::: Is x round?\nWe have following known facts from the context:\n  Chases(cat, lion, True)\n  Rough(cat, True)\n  Young(cat, True)\n  Needs(cat, lion, True)\n  Needs(cat, rabbit, True)\n  Color(dog, green, True)\n  Young(dog, True)\n  Likes(dog, cat, True)\n  Color(lion, blue, True)\n  Color(lion, green, True)\n  Chases(rabbit, lion, True)\n  Color(rabbit, blue, True)\n  Rough(rabbit, True)\n  Likes(rabbit, dog, True)\n  Needs(rabbit, dog, True)\n  Needs(rabbit, lion, True)\nWe have following known rules from the context:\n  rule1: Chases($x, lion, True) >>> Round($x, True)\n  rule2: (Needs(lion, rabbit, True) && Chases(rabbit, dog, True)) >>> Likes(lion, dog, True)\n  rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\n  rule4: (Needs($x, cat, True) && Chases($x, dog, True)) >>> Likes($x, rabbit, True)\n  rule5: (Chases($x, lion, True) && Color(lion, blue, True)) >>> Round(lion, True)\n  rule6: Chases($x, rabbit, True) >>> Rough($x, True)\n  rule7: (Rough($x, True) && Likes($x, rabbit, True)) >>> Young(rabbit, True)\n  rule8: (Chases(rabbit, cat, True) && Needs(cat, lion, True)) >>> Young(rabbit, True)\n  rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Chases($x, lion, True) >>> Round($x, True)\nBind $x to 'cat'\nObtain a new implied fact: Round('cat', True)\nUse rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\nFinish implied with rule3\nUse rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nFinish implied with rule9\nReuse rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\nFinish implied with rule3\nReuse rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nFinish implied with rule9\nFinish implied with rule1\nUse rule2: (Needs(lion, rabbit, True) && Chases(rabbit, dog, True)) >>> Likes(lion, dog, True)\nFinish implied with rule2\nReuse rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\nBind $x to 'cat'\nObtain a new implied fact: Needs('cat', 'cat', True)\nReuse rule2: (Needs(lion, rabbit, True) && Chases(rabbit, dog, True)) >>> Likes(lion, dog, True)\nFinish implied with rule2\nUse rule4: (Needs($x, cat, True) && Chases($x, dog, True)) >>> Likes($x, rabbit, True)\nFinish implied with rule4\nUse rule8: (Chases(rabbit, cat, True) && Needs(cat, lion, True)) >>> Young(rabbit, True)\nFinish implied with rule8\nReuse rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nFinish implied with rule9\nReuse rule2: (Needs(lion, rabbit, True) && Chases(rabbit, dog, True)) >>> Likes(lion, dog, True)\nFinish implied with rule2\nReuse rule4: (Needs($x, cat, True) && Chases($x, dog, True)) >>> Likes($x, rabbit, True)\nFinish implied with rule4\nReuse rule8: (Chases(rabbit, cat, True) && Needs(cat, lion, True)) >>> Young(rabbit, True)\nFinish implied with rule8\nReuse rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nFinish implied with rule9\nFinish implied with rule3\nReuse rule4: (Needs($x, cat, True) && Chases($x, dog, True)) >>> Likes($x, rabbit, True)\nBind $x to 'cat'\nUnbind $x\nBind $x to 'rabbit'\nUnbind $x\nFinish implied with rule4\nUse rule5: (Chases($x, lion, True) && Color(lion, blue, True)) >>> Round(lion, True)\nBind $x to 'cat'\nObtain a new implied fact: Round('lion', True)\nReuse rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\nBind $x to 'lion'\nFinish implied with rule3\nReuse rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nFinish implied with rule9\nFinish implied with rule5\nUse rule6: Chases($x, rabbit, True) >>> Rough($x, True)\nFinish implied with rule6\nUse rule7: (Rough($x, True) && Likes($x, rabbit, True)) >>> Young(rabbit, True)\nBind $x to 'cat'\nUnbind $x\nBind $x to 'rabbit'\nUnbind $x\nFinish implied with rule7\nReuse rule8: (Chases(rabbit, cat, True) && Needs(cat, lion, True)) >>> Young(rabbit, True)\nFinish implied with rule8\nReuse rule9: (Round($x, True) && Needs($x, cat, True)) >>> Chases($x, dog, True)\nBind $x to 'cat'\nObtain a new implied fact: Chases('cat', 'dog', True)\nReuse rule1: Chases($x, lion, True) >>> Round($x, True)\nBind $x to 'cat'\nFinish implied with rule1\nReuse rule2: (Needs(lion, rabbit, True) && Chases(rabbit, dog, True)) >>> Likes(lion, dog, True)\nFinish implied with rule2\nReuse rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\nBind $x to 'cat'\nFinish implied with rule3\nReuse rule4: (Needs($x, cat, True) && Chases($x, dog, True)) >>> Likes($x, rabbit, True)\nBind $x to 'cat'\nObtain a new implied fact: Likes('cat', 'rabbit', True)\nReuse rule7: (Rough($x, True) && Likes($x, rabbit, True)) >>> Young(rabbit, True)\nBind $x to 'cat'\nObtain a new implied fact: Young('rabbit', True)\nFinish implied with rule7\nFinish implied with rule4\nReuse rule5: (Chases($x, lion, True) && Color(lion, blue, True)) >>> Round(lion, True)\nBind $x to 'cat'\nFinish implied with rule5\nReuse rule6: Chases($x, rabbit, True) >>> Rough($x, True)\nBind $x to 'cat'\nFinish implied with rule6\nReuse rule8: (Chases(rabbit, cat, True) && Needs(cat, lion, True)) >>> Young(rabbit, True)\nFinish implied with rule8\nReuse rule1: Chases($x, lion, True) >>> Round($x, True)\nBind $x to 'rabbit'\nFinish implied with rule1\nReuse rule2: (Needs(lion, rabbit, True) && Chases(rabbit, dog, True)) >>> Likes(lion, dog, True)\nFinish implied with rule2\nReuse rule3: (Round($x, True) && Chases($x, lion, True)) >>> Needs($x, cat, True)\nBind $x to 'rabbit'\nFinish implied with rule3\nReuse rule4: (Needs($x, cat, True) && Chases($x, dog, True)) >>> Likes($x, rabbit, True)\nBind $x to 'rabbit'\nObtain a new implied fact: Likes('rabbit', 'rabbit', True)\nReuse rule7: (Rough($x, True) && Likes($x, rabbit, True)) >>> Young(rabbit, True)\nBind $x to 'rabbit'\nObtain an already known or implied fact: Young('rabbit', True)\nFinish implied with rule7\nFinish implied with rule4\nReuse rule5: (Chases($x, lion, True) && Color(lion, blue, True)) >>> Round(lion, True)\nBind $x to 'rabbit'\nFinish implied with rule5\nReuse rule6: Chases($x, rabbit, True) >>> Rough($x, True)\nBind $x to 'rabbit'\nFinish implied with rule6\nReuse rule8: (Chases(rabbit, cat, True) && Needs(cat, lion, True)) >>> Young(rabbit, True)\nFinish implied with rule8\nFinish implied with rule9\nAll newly implied Facts: Chases('cat', 'dog', True), Likes('cat', 'rabbit', True), Likes('rabbit', 'rabbit', True), Needs('cat', 'cat', True), Round('cat', True), Round('lion', True), Young('rabbit', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "parsing error",
+        "error_message": ""
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "No Output"
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-971_Q5",
+    "context": "Charlie is green. Charlie is kind. Erin is blue. Erin is kind. Fiona is green. Gary is blue. Gary is furry. Gary is green. Gary is kind. Gary is round. If someone is round and kind then they are green. All green, round people are blue. Round people are big. If someone is kind then they are furry. All blue people are kind. If someone is green then they are big. If Erin is cold and Erin is green then Erin is blue. Cold, blue people are kind. All green, big people are round.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Fiona is round.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Green($x, bool) ::: Is x green?\n  Kind($x, bool) ::: Is x kind?\n  Blue($x, bool) ::: Is x blue?\n  Furry($x, bool) ::: Is x furry?\n  Round($x, bool) ::: Is x round?\n  Big($x, bool) ::: Is x big?\n  Cold($x, bool) ::: Is x cold?\nWe have following known facts from the context:\n  Green(Charlie, True)\n  Kind(Charlie, True)\n  Blue(Erin, True)\n  Kind(Erin, True)\n  Green(Fiona, True)\n  Blue(Gary, True)\n  Furry(Gary, True)\n  Green(Gary, True)\n  Kind(Gary, True)\n  Round(Gary, True)\nWe have following known rules from the context:\n  rule1: Round($x, True) && Kind($x, True) >>> Green($x, True)\n  rule2: Green($x, True) && Round($x, True) >>> Blue($x, True)\n  rule3: Round($x, True) >>> Big($x, True)\n  rule4: Kind($x, True) >>> Furry($x, True)\n  rule5: Blue($x, True) >>> Kind($x, True)\n  rule6: Green($x, True) >>> Big($x, True)\n  rule7: Cold($x, True) && Blue($x, True) >>> Kind($x, True)\n  rule8: Green($x, True) && Big($x, True) >>> Round($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Round($x, True) && Kind($x, True) >>> Green($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Green('Gary', True)\nUnbind $x\nFinish implied with rule1\nUse rule2: Green($x, True) && Round($x, True) >>> Blue($x, True)\nBind $x to 'Charlie'\nUnbind $x\nBind $x to 'Fiona'\nUnbind $x\nBind $x to 'Gary'\nObtain an already known or implied fact: Blue('Gary', True)\nUnbind $x\nFinish implied with rule2\nUse rule3: Round($x, True) >>> Big($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: Big('Gary', True)\nUse rule8: Green($x, True) && Big($x, True) >>> Round($x, True)\nFinish implied with rule8\nFinish implied with rule3\nUse rule4: Kind($x, True) >>> Furry($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Furry('Charlie', True)\nUnbind $x\nBind $x to 'Erin'\nObtain a new implied fact: Furry('Erin', True)\nUnbind $x\nBind $x to 'Gary'\nObtain an already known or implied fact: Furry('Gary', True)\nUnbind $x\nFinish implied with rule4\nUse rule5: Blue($x, True) >>> Kind($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Kind('Erin', True)\nUnbind $x\nBind $x to 'Gary'\nObtain an already known or implied fact: Kind('Gary', True)\nUnbind $x\nFinish implied with rule5\nUse rule6: Green($x, True) >>> Big($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Big('Charlie', True)\nReuse rule8: Green($x, True) && Big($x, True) >>> Round($x, True)\nFinish implied with rule8\nReuse rule8: Green($x, True) && Big($x, True) >>> Round($x, True)\nFinish implied with rule8\nFinish implied with rule6\nUse rule7: Cold($x, True) && Blue($x, True) >>> Kind($x, True)\nFinish implied with rule7\nReuse rule8: Green($x, True) && Big($x, True) >>> Round($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Round('Charlie', True)\nReuse rule1: Round($x, True) && Kind($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Green('Charlie', True)\nFinish implied with rule1\nReuse rule2: Green($x, True) && Round($x, True) >>> Blue($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Blue('Charlie', True)\nReuse rule5: Blue($x, True) >>> Kind($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Kind('Charlie', True)\nFinish implied with rule5\nReuse rule7: Cold($x, True) && Blue($x, True) >>> Kind($x, True)\nBind $x to 'Charlie'\nFinish implied with rule7\nFinish implied with rule2\nReuse rule3: Round($x, True) >>> Big($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Big('Charlie', True)\nFinish implied with rule3\nReuse rule1: Round($x, True) && Kind($x, True) >>> Green($x, True)\nBind $x to 'Fiona'\nFinish implied with rule1\nReuse rule2: Green($x, True) && Round($x, True) >>> Blue($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Blue('Fiona', True)\nReuse rule5: Blue($x, True) >>> Kind($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Kind('Fiona', True)\nReuse rule1: Round($x, True) && Kind($x, True) >>> Green($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Green('Fiona', True)\nFinish implied with rule1\nReuse rule4: Kind($x, True) >>> Furry($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Furry('Fiona', True)\nFinish implied with rule4\nFinish implied with rule5\nReuse rule7: Cold($x, True) && Blue($x, True) >>> Kind($x, True)\nBind $x to 'Fiona'\nFinish implied with rule7\nFinish implied with rule2\nReuse rule3: Round($x, True) >>> Big($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Big('Fiona', True)\nFinish implied with rule3\nFinish implied with rule8\nAll newly implied Facts: Big('Charlie', True), Big('Gary', True), Blue('Charlie', True), Blue('Fiona', True), Furry('Charlie', True), Furry('Erin', True), Furry('Fiona', True), Kind('Fiona', True), Round('Charlie', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-804_Q16",
+    "context": "Anne is kind. Charlie is not big. Charlie is not green. Charlie is white. Erin is big. Erin is green. Erin is white. Fiona is green. Fiona is kind. Fiona is quiet. Fiona is red. Fiona is white. If Erin is big and Erin is red then Erin is kind. All rough things are green. If something is kind then it is green. Quiet, green things are big. If something is rough and green then it is red. If something is green then it is rough. If Erin is red then Erin is green. All red, rough things are quiet. If something is quiet and not red then it is not white.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Anne is white.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "invalid syntax (rules.krb, line 56)"
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "parsing error",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-572_Q18",
+    "context": "Charlie is green. Charlie is kind. Charlie is nice. Charlie is rough. Erin is kind. Erin is nice. Erin is quiet. Fiona is quiet. Fiona is rough. Harry is smart. All rough, green people are quiet. If someone is green and rough then they are nice. All kind, smart people are green. If Erin is green and Erin is blue then Erin is quiet. All quiet people are smart. All kind people are green. If someone is smart then they are kind. All rough, nice people are blue.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Erin is rough.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Green($x, bool) ::: Is x green?\n  Kind($x, bool) ::: Is x kind?\n  Nice($x, bool) ::: Is x nice?\n  Rough($x, bool) ::: Is x rough?\n  Quiet($x, bool) ::: Is x quiet?\n  Smart($x, bool) ::: Is x smart?\n  Blue($x, bool) ::: Is x blue?\nWe have following known facts from the context:\n  Green(Charlie, True)\n  Kind(Charlie, True)\n  Nice(Charlie, True)\n  Rough(Charlie, True)\n  Kind(Erin, True)\n  Nice(Erin, True)\n  Quiet(Erin, True)\n  Quiet(Fiona, True)\n  Rough(Fiona, True)\n  Smart(Harry, True)\nWe have following known rules from the context:\n  rule1: Rough($x, True) && Green($x, True) >>> Quiet($x, True)\n  rule2: Green($x, True) && Rough($x, True) >>> Nice($x, True)\n  rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\n  rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\n  rule5: Quiet($x, True) >>> Smart($x, True)\n  rule6: Kind($x, True) >>> Green($x, True)\n  rule7: Smart($x, True) >>> Kind($x, True)\n  rule8: Rough($x, True) && Nice($x, True) >>> Blue($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Rough($x, True) && Green($x, True) >>> Quiet($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Quiet('Charlie', True)\nUse rule5: Quiet($x, True) >>> Smart($x, True)\nFinish implied with rule5\nFinish implied with rule1\nUse rule2: Green($x, True) && Rough($x, True) >>> Nice($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Nice('Charlie', True)\nUnbind $x\nFinish implied with rule2\nUse rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nUnbind $x\nBind $x to 'Erin'\nUnbind $x\nFinish implied with rule3\nUse rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\nFinish implied with rule4\nReuse rule5: Quiet($x, True) >>> Smart($x, True)\nBind $x to 'Erin'\nObtain a new implied fact: Smart('Erin', True)\nReuse rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\nBind $x to 'Erin'\nObtain a new implied fact: Green('Erin', True)\nReuse rule1: Rough($x, True) && Green($x, True) >>> Quiet($x, True)\nBind $x to 'Erin'\nFinish implied with rule1\nReuse rule2: Green($x, True) && Rough($x, True) >>> Nice($x, True)\nBind $x to 'Erin'\nFinish implied with rule2\nReuse rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\nFinish implied with rule4\nFinish implied with rule3\nUse rule7: Smart($x, True) >>> Kind($x, True)\nFinish implied with rule7\nReuse rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\nBind $x to 'Fiona'\nFinish implied with rule3\nReuse rule7: Smart($x, True) >>> Kind($x, True)\nFinish implied with rule7\nReuse rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Green('Charlie', True)\nFinish implied with rule3\nReuse rule7: Smart($x, True) >>> Kind($x, True)\nFinish implied with rule7\nFinish implied with rule5\nUse rule6: Kind($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Green('Charlie', True)\nUnbind $x\nBind $x to 'Erin'\nObtain an already known or implied fact: Green('Erin', True)\nUnbind $x\nFinish implied with rule6\nReuse rule7: Smart($x, True) >>> Kind($x, True)\nBind $x to 'Harry'\nObtain a new implied fact: Kind('Harry', True)\nReuse rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\nBind $x to 'Harry'\nObtain a new implied fact: Green('Harry', True)\nReuse rule1: Rough($x, True) && Green($x, True) >>> Quiet($x, True)\nBind $x to 'Harry'\nFinish implied with rule1\nReuse rule2: Green($x, True) && Rough($x, True) >>> Nice($x, True)\nBind $x to 'Harry'\nFinish implied with rule2\nReuse rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\nFinish implied with rule4\nFinish implied with rule3\nReuse rule6: Kind($x, True) >>> Green($x, True)\nBind $x to 'Harry'\nObtain an already known or implied fact: Green('Harry', True)\nFinish implied with rule6\nReuse rule3: Kind($x, True) && Smart($x, True) >>> Green($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Green('Fiona', True)\nReuse rule1: Rough($x, True) && Green($x, True) >>> Quiet($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Quiet('Fiona', True)\nFinish implied with rule1\nReuse rule2: Green($x, True) && Rough($x, True) >>> Nice($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Nice('Fiona', True)\nUse rule8: Rough($x, True) && Nice($x, True) >>> Blue($x, True)\nFinish implied with rule8\nFinish implied with rule2\nReuse rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\nFinish implied with rule4\nFinish implied with rule3\nReuse rule6: Kind($x, True) >>> Green($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Green('Fiona', True)\nFinish implied with rule6\nFinish implied with rule7\nReuse rule8: Rough($x, True) && Nice($x, True) >>> Blue($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Blue('Charlie', True)\nReuse rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\nFinish implied with rule4\nReuse rule4: Green(Erin, True) && Blue(Erin, True) >>> Quiet(Erin, True)\nFinish implied with rule4\nFinish implied with rule8\nAll newly implied Facts: Blue('Charlie', True), Green('Erin', True), Green('Fiona', True), Green('Harry', True), Kind('Harry', True), Nice('Fiona', True), Quiet('Charlie', True), Smart('Erin', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "C",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "No Output"
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-285_Q16",
+    "context": "Bob is big. Bob is cold. Bob is furry. Bob is smart. Fiona is cold. Fiona is not green. Fiona is white. Gary is smart. Harry is big. Harry is cold. Harry is smart. All green people are furry. If Gary is furry and Gary is not smart then Gary is white. Smart people are green. If Bob is not green and Bob is not white then Bob is furry. Big people are cold. If someone is smart and furry then they are big. If someone is white and not cold then they are not blue. All cold people are not blue.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Bob is white.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Big($x, bool) ::: Is x big?\n  Cold($x, bool) ::: Is x cold?\n  Furry($x, bool) ::: Is x furry?\n  Smart($x, bool) ::: Is x smart?\n  Green($x, bool) ::: Is x green?\n  White($x, bool) ::: Is x white?\n  Blue($x, bool) ::: Is x blue?\nWe have following known facts from the context:\n  Big(Bob, True)\n  Cold(Bob, True)\n  Furry(Bob, True)\n  Smart(Bob, True)\n  Cold(Fiona, True)\n  Green(Fiona, False)\n  White(Fiona, True)\n  Smart(Gary, True)\n  Big(Harry, True)\n  Cold(Harry, True)\n  Smart(Harry, True)\nWe have following known rules from the context:\n  rule1: Green($x, True) >>> Furry($x, True)\n  rule2: (Furry(Gary, True) && Smart(Gary, False)) >>> White(Gary, True)\n  rule3: Smart($x, True) >>> Green($x, True)\n  rule4: (Big(Bob, True) && Green(Bob, False) && White(Bob, False)) >>> Furry(Bob, True)\n  rule5: Big($x, True) >>> Cold($x, True)\n  rule6: (Smart($x, True) && Furry($x, True)) >>> Big($x, True)\n  rule7: (White($x, True) && Cold($x, False)) >>> Blue($x, False)\n  rule8: Cold($x, True) >>> Blue($x, False)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Green($x, True) >>> Furry($x, True)\nFinish implied with rule1\nUse rule2: (Furry(Gary, True) && Smart(Gary, False)) >>> White(Gary, True)\nFinish implied with rule2\nUse rule3: Smart($x, True) >>> Green($x, True)\nBind $x to 'Bob'\nObtain a new implied fact: Green('Bob', True)\nReuse rule1: Green($x, True) >>> Furry($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Furry('Bob', True)\nFinish implied with rule1\nUse rule4: (Big(Bob, True) && Green(Bob, False) && White(Bob, False)) >>> Furry(Bob, True)\nFinish implied with rule4\nReuse rule1: Green($x, True) >>> Furry($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: Furry('Gary', True)\nReuse rule2: (Furry(Gary, True) && Smart(Gary, False)) >>> White(Gary, True)\nFinish implied with rule2\nUse rule6: (Smart($x, True) && Furry($x, True)) >>> Big($x, True)\nFinish implied with rule6\nFinish implied with rule1\nReuse rule4: (Big(Bob, True) && Green(Bob, False) && White(Bob, False)) >>> Furry(Bob, True)\nFinish implied with rule4\nReuse rule1: Green($x, True) >>> Furry($x, True)\nBind $x to 'Harry'\nObtain a new implied fact: Furry('Harry', True)\nReuse rule2: (Furry(Gary, True) && Smart(Gary, False)) >>> White(Gary, True)\nFinish implied with rule2\nReuse rule6: (Smart($x, True) && Furry($x, True)) >>> Big($x, True)\nFinish implied with rule6\nFinish implied with rule1\nReuse rule4: (Big(Bob, True) && Green(Bob, False) && White(Bob, False)) >>> Furry(Bob, True)\nFinish implied with rule4\nFinish implied with rule3\nReuse rule4: (Big(Bob, True) && Green(Bob, False) && White(Bob, False)) >>> Furry(Bob, True)\nFinish implied with rule4\nUse rule5: Big($x, True) >>> Cold($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Cold('Bob', True)\nUnbind $x\nBind $x to 'Harry'\nObtain an already known or implied fact: Cold('Harry', True)\nUnbind $x\nFinish implied with rule5\nReuse rule6: (Smart($x, True) && Furry($x, True)) >>> Big($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Big('Bob', True)\nUnbind $x\nBind $x to 'Gary'\nObtain a new implied fact: Big('Gary', True)\nReuse rule4: (Big(Bob, True) && Green(Bob, False) && White(Bob, False)) >>> Furry(Bob, True)\nFinish implied with rule4\nReuse rule5: Big($x, True) >>> Cold($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: Cold('Gary', True)\nUse rule7: (White($x, True) && Cold($x, False)) >>> Blue($x, False)\nFinish implied with rule7\nUse rule8: Cold($x, True) >>> Blue($x, False)\nFinish implied with rule8\nFinish implied with rule5\nFinish implied with rule6\nReuse rule7: (White($x, True) && Cold($x, False)) >>> Blue($x, False)\nBind $x to 'Fiona'\nUnbind $x\nFinish implied with rule7\nReuse rule8: Cold($x, True) >>> Blue($x, False)\nBind $x to 'Bob'\nObtain a new implied fact: Blue('Bob', False)\nUnbind $x\nBind $x to 'Fiona'\nObtain a new implied fact: Blue('Fiona', False)\nUnbind $x\nBind $x to 'Harry'\nObtain a new implied fact: Blue('Harry', False)\nUnbind $x\nBind $x to 'Gary'\nObtain a new implied fact: Blue('Gary', False)\nUnbind $x\nFinish implied with rule8\nAll newly implied Facts: Big('Gary', True), Blue('Bob', False), Blue('Fiona', False), Blue('Gary', False), Blue('Harry', False), Cold('Gary', True), Furry('Gary', True), Furry('Harry', True), Green('Bob', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "C",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "No Output"
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_RelNoneg-OWA-D5-686_Q18",
+    "context": "The bald eagle chases the squirrel. The bald eagle is blue. The bald eagle likes the cow. The bald eagle likes the lion. The cow chases the lion. The cow is green. The cow likes the bald eagle. The cow likes the lion. The lion likes the cow. The squirrel chases the bald eagle. The squirrel is big. The squirrel is green. The squirrel is red. The squirrel sees the bald eagle. If someone is red and they chase the bald eagle then the bald eagle is green. If someone likes the bald eagle then they like the lion. If someone is green then they see the lion. If the cow is blue then the cow likes the squirrel. If the bald eagle sees the lion then the lion sees the squirrel. If someone sees the squirrel then they are green. If someone likes the bald eagle then the bald eagle is blue.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? The bald eagle chases the lion.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Chases($x, $y, bool) ::: Does x chase y?\n  Color($x, $color) ::: What is the color of x?\n  Likes($x, $y, bool) ::: Does x like y?\n  Size($x, $size) ::: What is the size of x?\n  Sees($x, $y, bool) ::: Does x see y?\nWe have following known facts from the context:\n  Chases(bald_eagle, squirrel, True)\n  Color(bald_eagle, blue)\n  Likes(bald_eagle, cow, True)\n  Likes(bald_eagle, lion, True)\n  Chases(cow, lion, True)\n  Color(cow, green)\n  Likes(cow, bald_eagle, True)\n  Likes(cow, lion, True)\n  Likes(lion, cow, True)\n  Chases(squirrel, bald_eagle, True)\n  Size(squirrel, big)\n  Color(squirrel, green)\n  Color(squirrel, red)\n  Sees(squirrel, bald_eagle, True)\nWe have following known rules from the context:\n  rule1: (Color($x, red) && Chases($x, bald_eagle, True)) >>> Color(bald_eagle, green)\n  rule2: (Likes($x, bald_eagle, True)) >>> Likes($x, lion, True)\n  rule3: (Color($x, green)) >>> Sees($x, lion, True)\n  rule4: (Color(cow, blue)) >>> Likes(cow, squirrel, True)\n  rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\n  rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\n  rule7: (Likes($x, bald_eagle, True)) >>> Color(bald_eagle, blue)\nNow begin reasoning to obtain all implied facts:\nUse rule1: (Color($x, red) && Chases($x, bald_eagle, True)) >>> Color(bald_eagle, green)\nBind $x to 'squirrel'\nObtain a new implied fact: Color('bald_eagle', 'green')\nReuse rule1: (Color($x, red) && Chases($x, bald_eagle, True)) >>> Color(bald_eagle, green)\nBind $x to 'bald_eagle'\nFinish implied with rule1\nUse rule3: (Color($x, green)) >>> Sees($x, lion, True)\nFinish implied with rule3\nUse rule4: (Color(cow, blue)) >>> Likes(cow, squirrel, True)\nFinish implied with rule4\nFinish implied with rule1\nUse rule2: (Likes($x, bald_eagle, True)) >>> Likes($x, lion, True)\nBind $x to 'cow'\nObtain an already known or implied fact: Likes('cow', 'lion', True)\nUnbind $x\nFinish implied with rule2\nReuse rule3: (Color($x, green)) >>> Sees($x, lion, True)\nBind $x to 'cow'\nObtain a new implied fact: Sees('cow', 'lion', True)\nUse rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\nFinish implied with rule5\nUse rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\nFinish implied with rule6\nReuse rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\nFinish implied with rule5\nReuse rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\nFinish implied with rule6\nReuse rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\nFinish implied with rule5\nReuse rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\nFinish implied with rule6\nFinish implied with rule3\nReuse rule4: (Color(cow, blue)) >>> Likes(cow, squirrel, True)\nFinish implied with rule4\nReuse rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\nObtain a new implied fact: Sees('lion', 'squirrel', True)\nReuse rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\nFinish implied with rule5\nReuse rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\nFinish implied with rule6\nFinish implied with rule5\nReuse rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\nBind $x to 'lion'\nObtain a new implied fact: Color('lion', 'green')\nReuse rule1: (Color($x, red) && Chases($x, bald_eagle, True)) >>> Color(bald_eagle, green)\nBind $x to 'lion'\nFinish implied with rule1\nReuse rule3: (Color($x, green)) >>> Sees($x, lion, True)\nBind $x to 'lion'\nObtain a new implied fact: Sees('lion', 'lion', True)\nReuse rule5: (Sees(bald_eagle, lion, True)) >>> Sees(lion, squirrel, True)\nFinish implied with rule5\nReuse rule6: (Sees($x, squirrel, True)) >>> Color($x, green)\nBind $x to 'lion'\nFinish implied with rule6\nFinish implied with rule3\nReuse rule4: (Color(cow, blue)) >>> Likes(cow, squirrel, True)\nFinish implied with rule4\nFinish implied with rule6\nUse rule7: (Likes($x, bald_eagle, True)) >>> Color(bald_eagle, blue)\nBind $x to 'cow'\nObtain an already known or implied fact: Color('bald_eagle', 'blue')\nUnbind $x\nFinish implied with rule7\nAll newly implied Facts: Color('bald_eagle', 'green'), Color('lion', 'green'), Sees('cow', 'lion', True), Sees('lion', 'lion', True), Sees('lion', 'squirrel', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "parsing error",
+        "error_message": ""
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "parsing error",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-735_Q9",
+    "context": "Bob is big. Bob is nice. Bob is smart. Charlie is nice. Dave is nice. Erin is big. Erin is blue. Erin is furry. Erin is quiet. Erin is round. Erin is smart. All nice things are big. All furry things are blue. Blue, furry things are quiet. If something is round and nice then it is blue. If Bob is round then Bob is blue. Big, quiet things are furry. If something is blue and furry then it is smart. If Charlie is nice and Charlie is big then Charlie is quiet.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Charlie is blue.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Big($x, bool) ::: Is x big?\n  Nice($x, bool) ::: Is x nice?\n  Smart($x, bool) ::: Is x smart?\n  Blue($x, bool) ::: Is x blue?\n  Furry($x, bool) ::: Is x furry?\n  Quiet($x, bool) ::: Is x quiet?\n  Round($x, bool) ::: Is x round?\nWe have following known facts from the context:\n  Big(Bob, True)\n  Nice(Bob, True)\n  Smart(Bob, True)\n  Nice(Charlie, True)\n  Nice(Dave, True)\n  Big(Erin, True)\n  Blue(Erin, True)\n  Furry(Erin, True)\n  Quiet(Erin, True)\n  Round(Erin, True)\n  Smart(Erin, True)\nWe have following known rules from the context:\n  rule1: Nice($x, True) >>> Big($x, True)\n  rule2: Furry($x, True) >>> Blue($x, True)\n  rule3: Blue($x, True) && Furry($x, True) >>> Quiet($x, True)\n  rule4: Round($x, True) && Nice($x, True) >>> Blue($x, True)\n  rule5: Round(Bob, True) >>> Blue(Bob, True)\n  rule6: Big($x, True) && Quiet($x, True) >>> Furry($x, True)\n  rule7: Blue($x, True) && Furry($x, True) >>> Smart($x, True)\n  rule8: Nice(Charlie, True) && Big(Charlie, True) >>> Quiet(Charlie, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Nice($x, True) >>> Big($x, True)\nBind $x to 'Bob'\nObtain an already known or implied fact: Big('Bob', True)\nUnbind $x\nBind $x to 'Charlie'\nObtain a new implied fact: Big('Charlie', True)\nUse rule6: Big($x, True) && Quiet($x, True) >>> Furry($x, True)\nFinish implied with rule6\nUse rule8: Nice(Charlie, True) && Big(Charlie, True) >>> Quiet(Charlie, True)\nFinish implied with rule8\nReuse rule6: Big($x, True) && Quiet($x, True) >>> Furry($x, True)\nFinish implied with rule6\nReuse rule8: Nice(Charlie, True) && Big(Charlie, True) >>> Quiet(Charlie, True)\nFinish implied with rule8\nFinish implied with rule1\nUse rule2: Furry($x, True) >>> Blue($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Blue('Erin', True)\nUnbind $x\nFinish implied with rule2\nUse rule3: Blue($x, True) && Furry($x, True) >>> Quiet($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Quiet('Erin', True)\nUnbind $x\nFinish implied with rule3\nUse rule4: Round($x, True) && Nice($x, True) >>> Blue($x, True)\nBind $x to 'Erin'\nUnbind $x\nFinish implied with rule4\nUse rule5: Round(Bob, True) >>> Blue(Bob, True)\nFinish implied with rule5\nReuse rule6: Big($x, True) && Quiet($x, True) >>> Furry($x, True)\nBind $x to 'Bob'\nUnbind $x\nBind $x to 'Erin'\nObtain an already known or implied fact: Furry('Erin', True)\nUnbind $x\nBind $x to 'Charlie'\nUnbind $x\nBind $x to 'Dave'\nUnbind $x\nFinish implied with rule6\nUse rule7: Blue($x, True) && Furry($x, True) >>> Smart($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Smart('Erin', True)\nUnbind $x\nFinish implied with rule7\nReuse rule8: Nice(Charlie, True) && Big(Charlie, True) >>> Quiet(Charlie, True)\nObtain a new implied fact: Quiet('Charlie', True)\nReuse rule6: Big($x, True) && Quiet($x, True) >>> Furry($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Furry('Charlie', True)\nReuse rule2: Furry($x, True) >>> Blue($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Blue('Charlie', True)\nReuse rule3: Blue($x, True) && Furry($x, True) >>> Quiet($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Quiet('Charlie', True)\nFinish implied with rule3\nReuse rule7: Blue($x, True) && Furry($x, True) >>> Smart($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Smart('Charlie', True)\nFinish implied with rule7\nFinish implied with rule2\nReuse rule3: Blue($x, True) && Furry($x, True) >>> Quiet($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Quiet('Charlie', True)\nFinish implied with rule3\nReuse rule7: Blue($x, True) && Furry($x, True) >>> Smart($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Smart('Charlie', True)\nFinish implied with rule7\nFinish implied with rule6\nFinish implied with rule8\nAll newly implied Facts: Big('Charlie', True), Blue('Charlie', True), Furry('Charlie', True), Quiet('Charlie', True), Smart('Charlie', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_RelNeg-OWA-D5-966_Q7",
+    "context": "The bald eagle eats the cow. The bald eagle is young. The cow is nice. The cow sees the bald eagle. The dog eats the bald eagle. The tiger eats the cow. The tiger needs the bald eagle. If something is green and it eats the cow then it does not see the bald eagle. If something eats the tiger then the tiger is young. If something is red then it eats the tiger. If something sees the bald eagle then it eats the cow. If something is green and it needs the dog then it needs the bald eagle. If something sees the tiger then it needs the bald eagle. If something is red then it eats the bald eagle. If something is young then it is red. If something eats the dog and it is red then the dog is young.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? The tiger is young.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Eats($x, $y, bool) ::: Does x eat y?\n  Young($x, bool) ::: Is x young?\n  Nice($x, bool) ::: Is x nice?\n  Sees($x, $y, bool) ::: Does x see y?\n  Needs($x, $y, bool) ::: Does x need y?\n  Green($x, bool) ::: Is x green?\n  Red($x, bool) ::: Is x red?\nWe have following known facts from the context:\n  Eats(bald_eagle, cow, True)\n  Young(bald_eagle, True)\n  Nice(cow, True)\n  Sees(cow, bald_eagle, True)\n  Eats(dog, bald_eagle, True)\n  Eats(tiger, cow, True)\n  Needs(tiger, bald_eagle, True)\nWe have following known rules from the context:\n  rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\n  rule2: Eats($x, tiger, True) >>> Young(tiger, True)\n  rule3: Red($x, True) >>> Eats($x, tiger, True)\n  rule4: Sees($x, bald_eagle, True) >>> Eats($x, cow, True)\n  rule5: (Green($x, True) && Needs($x, dog, True)) >>> Needs($x, bald_eagle, True)\n  rule6: Sees($x, tiger, True) >>> Needs($x, bald_eagle, True)\n  rule7: Red($x, True) >>> Eats($x, bald_eagle, True)\n  rule8: Young($x, True) >>> Red($x, True)\n  rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\nFinish implied with rule1\nUse rule2: Eats($x, tiger, True) >>> Young(tiger, True)\nFinish implied with rule2\nUse rule3: Red($x, True) >>> Eats($x, tiger, True)\nFinish implied with rule3\nUse rule4: Sees($x, bald_eagle, True) >>> Eats($x, cow, True)\nBind $x to 'cow'\nObtain a new implied fact: Eats('cow', 'cow', True)\nReuse rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\nBind $x to 'cow'\nFinish implied with rule1\nReuse rule2: Eats($x, tiger, True) >>> Young(tiger, True)\nBind $x to 'cow'\nFinish implied with rule2\nUse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule4\nUse rule5: (Green($x, True) && Needs($x, dog, True)) >>> Needs($x, bald_eagle, True)\nFinish implied with rule5\nUse rule6: Sees($x, tiger, True) >>> Needs($x, bald_eagle, True)\nFinish implied with rule6\nUse rule7: Red($x, True) >>> Eats($x, bald_eagle, True)\nFinish implied with rule7\nUse rule8: Young($x, True) >>> Red($x, True)\nBind $x to 'bald_eagle'\nObtain a new implied fact: Red('bald_eagle', True)\nReuse rule3: Red($x, True) >>> Eats($x, tiger, True)\nBind $x to 'bald_eagle'\nObtain a new implied fact: Eats('bald_eagle', 'tiger', True)\nReuse rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\nBind $x to 'bald_eagle'\nFinish implied with rule1\nReuse rule2: Eats($x, tiger, True) >>> Young(tiger, True)\nBind $x to 'bald_eagle'\nObtain a new implied fact: Young('tiger', True)\nReuse rule8: Young($x, True) >>> Red($x, True)\nBind $x to 'tiger'\nObtain a new implied fact: Red('tiger', True)\nReuse rule3: Red($x, True) >>> Eats($x, tiger, True)\nBind $x to 'tiger'\nObtain a new implied fact: Eats('tiger', 'tiger', True)\nReuse rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\nBind $x to 'tiger'\nFinish implied with rule1\nReuse rule2: Eats($x, tiger, True) >>> Young(tiger, True)\nBind $x to 'tiger'\nObtain an already known or implied fact: Young('tiger', True)\nFinish implied with rule2\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule3\nReuse rule7: Red($x, True) >>> Eats($x, bald_eagle, True)\nBind $x to 'tiger'\nObtain a new implied fact: Eats('tiger', 'bald_eagle', True)\nReuse rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\nBind $x to 'tiger'\nFinish implied with rule1\nReuse rule2: Eats($x, tiger, True) >>> Young(tiger, True)\nBind $x to 'tiger'\nFinish implied with rule2\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule7\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule8\nFinish implied with rule2\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule3\nReuse rule7: Red($x, True) >>> Eats($x, bald_eagle, True)\nBind $x to 'bald_eagle'\nObtain a new implied fact: Eats('bald_eagle', 'bald_eagle', True)\nReuse rule1: (Green($x, True) && Eats($x, cow, True)) >>> Sees($x, bald_eagle, False)\nBind $x to 'bald_eagle'\nFinish implied with rule1\nReuse rule2: Eats($x, tiger, True) >>> Young(tiger, True)\nBind $x to 'bald_eagle'\nFinish implied with rule2\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule7\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nFinish implied with rule8\nReuse rule9: (Eats($x, dog, True) && Red($x, True)) >>> Young(dog, True)\nFinish implied with rule9\nAll newly implied Facts: Eats('bald_eagle', 'bald_eagle', True), Eats('bald_eagle', 'tiger', True), Eats('cow', 'cow', True), Eats('tiger', 'bald_eagle', True), Eats('tiger', 'tiger', True), Red('bald_eagle', True), Red('tiger', True), Young('tiger', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-145_Q9",
+    "context": "Anne is kind. Anne is quiet. Anne is smart. Bob is kind. Bob is nice. Bob is smart. Fiona is not nice. Fiona is red. Gary is nice. Gary is white. If Bob is kind then Bob is smart. If something is kind and nice then it is smart. If something is nice and red then it is smart. If something is quiet and not nice then it is smart. All green things are kind. If Anne is quiet and Anne is white then Anne is kind. If Fiona is not nice then Fiona is green. All smart, kind things are white. If something is kind and green then it is quiet.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Fiona is smart.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Kind($x, bool) ::: Is x kind?\n  Quiet($x, bool) ::: Is x quiet?\n  Smart($x, bool) ::: Is x smart?\n  Nice($x, bool) ::: Is x nice?\n  Red($x, bool) ::: Is x red?\n  White($x, bool) ::: Is x white?\n  Green($x, bool) ::: Is x green?\nWe have following known facts from the context:\n  Kind(Anne, True)\n  Quiet(Anne, True)\n  Smart(Anne, True)\n  Kind(Bob, True)\n  Nice(Bob, True)\n  Smart(Bob, True)\n  Nice(Fiona, False)\n  Red(Fiona, True)\n  Nice(Gary, True)\n  White(Gary, True)\nWe have following known rules from the context:\n  rule1: Kind(Bob, True) >>> Smart(Bob, True)\n  rule2: Kind($x, True) && Nice($x, True) >>> Smart($x, True)\n  rule3: Nice($x, True) && Red($x, True) >>> Smart($x, True)\n  rule4: Quiet($x, True) && Nice($x, False) >>> Smart($x, True)\n  rule5: Green($x, True) >>> Kind($x, True)\n  rule6: Quiet(Anne, True) && White(Anne, True) >>> Kind(Anne, True)\n  rule7: Nice(Fiona, False) >>> Green(Fiona, True)\n  rule8: Smart($x, True) && Kind($x, True) >>> White($x, True)\n  rule9: Kind($x, True) && Green($x, True) >>> Quiet($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Kind(Bob, True) >>> Smart(Bob, True)\nObtain an already known or implied fact: Smart('Bob', True)\nFinish implied with rule1\nUse rule2: Kind($x, True) && Nice($x, True) >>> Smart($x, True)\nBind $x to 'Anne'\nUnbind $x\nBind $x to 'Bob'\nObtain an already known or implied fact: Smart('Bob', True)\nUnbind $x\nFinish implied with rule2\nUse rule3: Nice($x, True) && Red($x, True) >>> Smart($x, True)\nBind $x to 'Bob'\nUnbind $x\nBind $x to 'Gary'\nUnbind $x\nFinish implied with rule3\nUse rule4: Quiet($x, True) && Nice($x, False) >>> Smart($x, True)\nBind $x to 'Anne'\nUnbind $x\nFinish implied with rule4\nUse rule5: Green($x, True) >>> Kind($x, True)\nFinish implied with rule5\nUse rule6: Quiet(Anne, True) && White(Anne, True) >>> Kind(Anne, True)\nFinish implied with rule6\nUse rule7: Nice(Fiona, False) >>> Green(Fiona, True)\nObtain a new implied fact: Green('Fiona', True)\nReuse rule5: Green($x, True) >>> Kind($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Kind('Fiona', True)\nReuse rule1: Kind(Bob, True) >>> Smart(Bob, True)\nFinish implied with rule1\nReuse rule2: Kind($x, True) && Nice($x, True) >>> Smart($x, True)\nBind $x to 'Fiona'\nFinish implied with rule2\nUse rule8: Smart($x, True) && Kind($x, True) >>> White($x, True)\nFinish implied with rule8\nUse rule9: Kind($x, True) && Green($x, True) >>> Quiet($x, True)\nFinish implied with rule9\nFinish implied with rule5\nReuse rule9: Kind($x, True) && Green($x, True) >>> Quiet($x, True)\nFinish implied with rule9\nFinish implied with rule7\nReuse rule8: Smart($x, True) && Kind($x, True) >>> White($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: White('Anne', True)\nReuse rule6: Quiet(Anne, True) && White(Anne, True) >>> Kind(Anne, True)\nObtain an already known or implied fact: Kind('Anne', True)\nFinish implied with rule6\nReuse rule6: Quiet(Anne, True) && White(Anne, True) >>> Kind(Anne, True)\nFinish implied with rule6\nFinish implied with rule8\nReuse rule9: Kind($x, True) && Green($x, True) >>> Quiet($x, True)\nBind $x to 'Anne'\nUnbind $x\nBind $x to 'Bob'\nUnbind $x\nBind $x to 'Fiona'\nObtain a new implied fact: Quiet('Fiona', True)\nReuse rule4: Quiet($x, True) && Nice($x, False) >>> Smart($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Smart('Fiona', True)\nReuse rule8: Smart($x, True) && Kind($x, True) >>> White($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: White('Fiona', True)\nReuse rule6: Quiet(Anne, True) && White(Anne, True) >>> Kind(Anne, True)\nFinish implied with rule6\nFinish implied with rule8\nFinish implied with rule4\nReuse rule6: Quiet(Anne, True) && White(Anne, True) >>> Kind(Anne, True)\nFinish implied with rule6\nFinish implied with rule9\nAll newly implied Facts: Green('Fiona', True), Kind('Fiona', True), Quiet('Fiona', True), Smart('Fiona', True), White('Anne', True), White('Fiona', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-401_Q15",
+    "context": "Anne is cold. Anne is kind. Charlie is blue. Charlie is round. Dave is blue. Fiona is not green. Fiona is kind. If Charlie is cold then Charlie is quiet. If Charlie is big then Charlie is not green. If Anne is kind then Anne is big. All big people are blue. Blue people are quiet. If Dave is kind then Dave is cold. If someone is round then they are green. Quiet people are round. If someone is kind and not blue then they are round.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Dave is not cold.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Cold($x, bool) ::: Is x cold?\n  Kind($x, bool) ::: Is x kind?\n  Blue($x, bool) ::: Is x blue?\n  Round($x, bool) ::: Is x round?\n  Green($x, bool) ::: Is x green?\n  Quiet($x, bool) ::: Is x quiet?\n  Big($x, bool) ::: Is x big?\nWe have following known facts from the context:\n  Cold(Anne, True)\n  Kind(Anne, True)\n  Blue(Charlie, True)\n  Round(Charlie, True)\n  Blue(Dave, True)\n  Green(Fiona, False)\n  Kind(Fiona, True)\nWe have following known rules from the context:\n  rule1: Cold(Charlie, True) >>> Quiet(Charlie, True)\n  rule2: Big(Charlie, True) >>> Green(Charlie, False)\n  rule3: Kind(Anne, True) >>> Big(Anne, True)\n  rule4: Big($x, True) >>> Blue($x, True)\n  rule5: Blue($x, True) >>> Quiet($x, True)\n  rule6: Kind(Dave, True) >>> Cold(Dave, True)\n  rule7: Round($x, True) >>> Green($x, True)\n  rule8: Quiet($x, True) >>> Round($x, True)\n  rule9: (Kind($x, True) && Blue($x, False)) >>> Round($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Cold(Charlie, True) >>> Quiet(Charlie, True)\nFinish implied with rule1\nUse rule2: Big(Charlie, True) >>> Green(Charlie, False)\nFinish implied with rule2\nUse rule3: Kind(Anne, True) >>> Big(Anne, True)\nObtain a new implied fact: Big('Anne', True)\nReuse rule2: Big(Charlie, True) >>> Green(Charlie, False)\nFinish implied with rule2\nUse rule4: Big($x, True) >>> Blue($x, True)\nFinish implied with rule4\nFinish implied with rule3\nReuse rule4: Big($x, True) >>> Blue($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Blue('Anne', True)\nUse rule5: Blue($x, True) >>> Quiet($x, True)\nFinish implied with rule5\nUse rule9: (Kind($x, True) && Blue($x, False)) >>> Round($x, True)\nFinish implied with rule9\nFinish implied with rule4\nReuse rule5: Blue($x, True) >>> Quiet($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Quiet('Charlie', True)\nUse rule8: Quiet($x, True) >>> Round($x, True)\nFinish implied with rule8\nReuse rule8: Quiet($x, True) >>> Round($x, True)\nFinish implied with rule8\nReuse rule8: Quiet($x, True) >>> Round($x, True)\nFinish implied with rule8\nFinish implied with rule5\nUse rule6: Kind(Dave, True) >>> Cold(Dave, True)\nFinish implied with rule6\nUse rule7: Round($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Green('Charlie', True)\nUnbind $x\nFinish implied with rule7\nReuse rule8: Quiet($x, True) >>> Round($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Round('Charlie', True)\nUnbind $x\nBind $x to 'Dave'\nObtain a new implied fact: Round('Dave', True)\nReuse rule7: Round($x, True) >>> Green($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Green('Dave', True)\nFinish implied with rule7\nReuse rule7: Round($x, True) >>> Green($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Green('Anne', True)\nFinish implied with rule7\nFinish implied with rule8\nReuse rule9: (Kind($x, True) && Blue($x, False)) >>> Round($x, True)\nBind $x to 'Anne'\nUnbind $x\nBind $x to 'Fiona'\nUnbind $x\nFinish implied with rule9\nAll newly implied Facts: Big('Anne', True), Blue('Anne', True), Green('Anne', True), Green('Charlie', True), Green('Dave', True), Quiet('Charlie', True), Round('Dave', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-352_Q8",
+    "context": "Charlie is furry. Charlie is green. Charlie is white. Dave is blue. Dave is cold. Gary is cold. Gary is rough. Harry is blue. Harry is furry. Harry is rough. Harry is white. Nice, cold people are green. Rough people are green. Green people are blue. If someone is blue then they are nice. Furry, green people are rough. Green, nice people are furry. White people are nice. Cold people are blue. All rough, nice people are white.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Dave is not furry.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "B",
+    "roles": {
+      "LP": {
+        "predict": "B",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Furry($x, bool) ::: Is x furry?\n  Green($x, bool) ::: Is x green?\n  White($x, bool) ::: Is x white?\n  Blue($x, bool) ::: Is x blue?\n  Cold($x, bool) ::: Is x cold?\n  Rough($x, bool) ::: Is x rough?\n  Nice($x, bool) ::: Is x nice?\nWe have following known facts from the context:\n  Furry(Charlie, True)\n  Green(Charlie, True)\n  White(Charlie, True)\n  Blue(Dave, True)\n  Cold(Dave, True)\n  Cold(Gary, True)\n  Rough(Gary, True)\n  Blue(Harry, True)\n  Furry(Harry, True)\n  Rough(Harry, True)\n  White(Harry, True)\nWe have following known rules from the context:\n  rule1: Nice($x, True) && Cold($x, True) >>> Green($x, True)\n  rule2: Rough($x, True) >>> Green($x, True)\n  rule3: Green($x, True) >>> Blue($x, True)\n  rule4: Blue($x, True) >>> Nice($x, True)\n  rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\n  rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\n  rule7: White($x, True) >>> Nice($x, True)\n  rule8: Cold($x, True) >>> Blue($x, True)\n  rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Nice($x, True) && Cold($x, True) >>> Green($x, True)\nFinish implied with rule1\nUse rule2: Rough($x, True) >>> Green($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: Green('Gary', True)\nUse rule3: Green($x, True) >>> Blue($x, True)\nFinish implied with rule3\nUse rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\nFinish implied with rule5\nUse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nReuse rule3: Green($x, True) >>> Blue($x, True)\nFinish implied with rule3\nReuse rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\nFinish implied with rule5\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nFinish implied with rule2\nReuse rule3: Green($x, True) >>> Blue($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Blue('Charlie', True)\nUse rule4: Blue($x, True) >>> Nice($x, True)\nFinish implied with rule4\nReuse rule4: Blue($x, True) >>> Nice($x, True)\nFinish implied with rule4\nFinish implied with rule3\nReuse rule4: Blue($x, True) >>> Nice($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Nice('Dave', True)\nReuse rule1: Nice($x, True) && Cold($x, True) >>> Green($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Green('Dave', True)\nReuse rule3: Green($x, True) >>> Blue($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Blue('Dave', True)\nFinish implied with rule3\nReuse rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\nFinish implied with rule5\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nFinish implied with rule1\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nUse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nFinish implied with rule9\nReuse rule1: Nice($x, True) && Cold($x, True) >>> Green($x, True)\nBind $x to 'Harry'\nFinish implied with rule1\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nReuse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nFinish implied with rule9\nReuse rule1: Nice($x, True) && Cold($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nFinish implied with rule1\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nReuse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nFinish implied with rule9\nReuse rule1: Nice($x, True) && Cold($x, True) >>> Green($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Green('Gary', True)\nFinish implied with rule1\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nFinish implied with rule6\nReuse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nFinish implied with rule9\nFinish implied with rule4\nReuse rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Rough('Charlie', True)\nReuse rule2: Rough($x, True) >>> Green($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Green('Charlie', True)\nFinish implied with rule2\nReuse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nFinish implied with rule9\nFinish implied with rule5\nReuse rule6: Green($x, True) && Nice($x, True) >>> Furry($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Furry('Charlie', True)\nUnbind $x\nBind $x to 'Gary'\nObtain a new implied fact: Furry('Gary', True)\nReuse rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Rough('Gary', True)\nFinish implied with rule5\nReuse rule5: Furry($x, True) && Green($x, True) >>> Rough($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Rough('Dave', True)\nReuse rule2: Rough($x, True) >>> Green($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Green('Dave', True)\nFinish implied with rule2\nReuse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nFinish implied with rule9\nFinish implied with rule5\nFinish implied with rule6\nUse rule7: White($x, True) >>> Nice($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Nice('Charlie', True)\nUnbind $x\nBind $x to 'Harry'\nObtain an already known or implied fact: Nice('Harry', True)\nUnbind $x\nFinish implied with rule7\nUse rule8: Cold($x, True) >>> Blue($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Blue('Dave', True)\nUnbind $x\nBind $x to 'Gary'\nObtain an already known or implied fact: Blue('Gary', True)\nUnbind $x\nFinish implied with rule8\nReuse rule9: Rough($x, True) && Nice($x, True) >>> White($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: White('Gary', True)\nReuse rule7: White($x, True) >>> Nice($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Nice('Gary', True)\nFinish implied with rule7\nReuse rule7: White($x, True) >>> Nice($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Nice('Dave', True)\nFinish implied with rule7\nFinish implied with rule9\nAll newly implied Facts: Blue('Charlie', True), Furry('Gary', True), Green('Dave', True), Green('Gary', True), Nice('Dave', True), Rough('Charlie', True), Rough('Dave', True), White('Gary', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "B",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-842_Q7",
+    "context": "Anne is big. Anne is cold. Anne is young. Dave is round. Dave is white. Erin is cold. Erin is white. Erin is young. Gary is cold. Gary is young. If something is big then it is cold. Round things are big. Furry, round things are big. All cold things are furry. If Erin is round then Erin is young. All furry, big things are young. White things are round. If Gary is cold then Gary is white. All white, young things are nice.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Dave is furry.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "A",
+    "roles": {
+      "LP": {
+        "predict": "A",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Big($x, bool) ::: Is x big?\n  Cold($x, bool) ::: Is x cold?\n  Young($x, bool) ::: Is x young?\n  Round($x, bool) ::: Is x round?\n  White($x, bool) ::: Is x white?\n  Furry($x, bool) ::: Is x furry?\n  Nice($x, bool) ::: Is x nice?\nWe have following known facts from the context:\n  Big(Anne, True)\n  Cold(Anne, True)\n  Young(Anne, True)\n  Round(Dave, True)\n  White(Dave, True)\n  Cold(Erin, True)\n  White(Erin, True)\n  Young(Erin, True)\n  Cold(Gary, True)\n  Young(Gary, True)\nWe have following known rules from the context:\n  rule1: Big($x, True) >>> Cold($x, True)\n  rule2: Round($x, True) >>> Big($x, True)\n  rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\n  rule4: Cold($x, True) >>> Furry($x, True)\n  rule5: Round(Erin, True) >>> Young(Erin, True)\n  rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\n  rule7: White($x, True) >>> Round($x, True)\n  rule8: Cold(Gary, True) >>> White(Gary, True)\n  rule9: White($x, True) && Young($x, True) >>> Nice($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Big($x, True) >>> Cold($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Cold('Anne', True)\nUnbind $x\nFinish implied with rule1\nUse rule2: Round($x, True) >>> Big($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Big('Dave', True)\nReuse rule1: Big($x, True) >>> Cold($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Cold('Dave', True)\nUse rule4: Cold($x, True) >>> Furry($x, True)\nFinish implied with rule4\nUse rule8: Cold(Gary, True) >>> White(Gary, True)\nFinish implied with rule8\nFinish implied with rule1\nUse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nFinish implied with rule6\nFinish implied with rule2\nUse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nFinish implied with rule3\nReuse rule4: Cold($x, True) >>> Furry($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Furry('Anne', True)\nReuse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nBind $x to 'Anne'\nFinish implied with rule3\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nFinish implied with rule6\nReuse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nBind $x to 'Erin'\nFinish implied with rule3\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nFinish implied with rule6\nReuse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nBind $x to 'Gary'\nFinish implied with rule3\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nFinish implied with rule6\nReuse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Big('Dave', True)\nFinish implied with rule3\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nFinish implied with rule6\nFinish implied with rule4\nUse rule5: Round(Erin, True) >>> Young(Erin, True)\nFinish implied with rule5\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Young('Anne', True)\nUnbind $x\nBind $x to 'Erin'\nUnbind $x\nBind $x to 'Gary'\nUnbind $x\nBind $x to 'Dave'\nObtain a new implied fact: Young('Dave', True)\nUse rule9: White($x, True) && Young($x, True) >>> Nice($x, True)\nFinish implied with rule9\nFinish implied with rule6\nUse rule7: White($x, True) >>> Round($x, True)\nBind $x to 'Dave'\nObtain an already known or implied fact: Round('Dave', True)\nUnbind $x\nBind $x to 'Erin'\nObtain a new implied fact: Round('Erin', True)\nReuse rule2: Round($x, True) >>> Big($x, True)\nBind $x to 'Erin'\nObtain a new implied fact: Big('Erin', True)\nReuse rule1: Big($x, True) >>> Cold($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Cold('Erin', True)\nFinish implied with rule1\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Young('Erin', True)\nFinish implied with rule6\nFinish implied with rule2\nReuse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Big('Erin', True)\nFinish implied with rule3\nReuse rule5: Round(Erin, True) >>> Young(Erin, True)\nObtain an already known or implied fact: Young('Erin', True)\nFinish implied with rule5\nFinish implied with rule7\nReuse rule8: Cold(Gary, True) >>> White(Gary, True)\nObtain a new implied fact: White('Gary', True)\nReuse rule7: White($x, True) >>> Round($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: Round('Gary', True)\nReuse rule2: Round($x, True) >>> Big($x, True)\nBind $x to 'Gary'\nObtain a new implied fact: Big('Gary', True)\nReuse rule1: Big($x, True) >>> Cold($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Cold('Gary', True)\nFinish implied with rule1\nReuse rule6: Furry($x, True) && Big($x, True) >>> Young($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Young('Gary', True)\nFinish implied with rule6\nFinish implied with rule2\nReuse rule3: Furry($x, True) && Round($x, True) >>> Big($x, True)\nBind $x to 'Gary'\nObtain an already known or implied fact: Big('Gary', True)\nFinish implied with rule3\nReuse rule5: Round(Erin, True) >>> Young(Erin, True)\nFinish implied with rule5\nFinish implied with rule7\nReuse rule9: White($x, True) && Young($x, True) >>> Nice($x, True)\nFinish implied with rule9\nFinish implied with rule8\nReuse rule9: White($x, True) && Young($x, True) >>> Nice($x, True)\nBind $x to 'Dave'\nObtain a new implied fact: Nice('Dave', True)\nUnbind $x\nBind $x to 'Erin'\nObtain a new implied fact: Nice('Erin', True)\nUnbind $x\nBind $x to 'Gary'\nObtain a new implied fact: Nice('Gary', True)\nUnbind $x\nFinish implied with rule9\nAll newly implied Facts: Big('Dave', True), Big('Erin', True), Big('Gary', True), Cold('Dave', True), Furry('Anne', True), Nice('Dave', True), Nice('Erin', True), Nice('Gary', True), Round('Erin', True), Round('Gary', True), White('Gary', True), Young('Dave', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "N/A",
+        "status_code": "success",
+        "error_message": ""
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNoneg-OWA-D5-296_Q13",
+    "context": "Anne is green. Charlie is big. Charlie is quiet. Charlie is round. Erin is green. Erin is kind. Erin is nice. Erin is quiet. Fiona is blue. Fiona is kind. Fiona is quiet. If something is kind then it is nice. If something is round and quiet then it is blue. If Charlie is kind then Charlie is big. All big, blue things are kind. Nice things are quiet. All green things are big. Quiet things are kind. Big things are kind. If Anne is green then Anne is round.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Erin is not blue.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Green($x, bool) ::: Is x green?\n  Big($x, bool) ::: Is x big?\n  Quiet($x, bool) ::: Is x quiet?\n  Round($x, bool) ::: Is x round?\n  Kind($x, bool) ::: Is x kind?\n  Nice($x, bool) ::: Is x nice?\n  Blue($x, bool) ::: Is x blue?\nWe have following known facts from the context:\n  Green(Anne, True)\n  Big(Charlie, True)\n  Quiet(Charlie, True)\n  Round(Charlie, True)\n  Green(Erin, True)\n  Kind(Erin, True)\n  Nice(Erin, True)\n  Quiet(Erin, True)\n  Blue(Fiona, True)\n  Kind(Fiona, True)\n  Quiet(Fiona, True)\nWe have following known rules from the context:\n  rule1: Kind($x, True) >>> Nice($x, True)\n  rule2: Round($x, True) && Quiet($x, True) >>> Blue($x, True)\n  rule3: Kind(Charlie, True) >>> Big(Charlie, True)\n  rule4: Big($x, True) && Blue($x, True) >>> Kind($x, True)\n  rule5: Nice($x, True) >>> Quiet($x, True)\n  rule6: Quiet($x, True) >>> Kind($x, True)\n  rule7: Big($x, True) >>> Kind($x, True)\n  rule8: Green($x, True) >>> Big($x, True)\n  rule9: Green(Anne, True) >>> Round(Anne, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Kind($x, True) >>> Nice($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Nice('Erin', True)\nUnbind $x\nBind $x to 'Fiona'\nObtain a new implied fact: Nice('Fiona', True)\nUse rule5: Nice($x, True) >>> Quiet($x, True)\nFinish implied with rule5\nFinish implied with rule1\nUse rule2: Round($x, True) && Quiet($x, True) >>> Blue($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Blue('Charlie', True)\nUse rule4: Big($x, True) && Blue($x, True) >>> Kind($x, True)\nFinish implied with rule4\nFinish implied with rule2\nUse rule3: Kind(Charlie, True) >>> Big(Charlie, True)\nFinish implied with rule3\nReuse rule4: Big($x, True) && Blue($x, True) >>> Kind($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Kind('Charlie', True)\nReuse rule1: Kind($x, True) >>> Nice($x, True)\nBind $x to 'Charlie'\nObtain a new implied fact: Nice('Charlie', True)\nReuse rule5: Nice($x, True) >>> Quiet($x, True)\nFinish implied with rule5\nFinish implied with rule1\nReuse rule3: Kind(Charlie, True) >>> Big(Charlie, True)\nObtain an already known or implied fact: Big('Charlie', True)\nFinish implied with rule3\nFinish implied with rule4\nReuse rule5: Nice($x, True) >>> Quiet($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Quiet('Erin', True)\nUnbind $x\nBind $x to 'Fiona'\nObtain an already known or implied fact: Quiet('Fiona', True)\nUnbind $x\nBind $x to 'Charlie'\nObtain an already known or implied fact: Quiet('Charlie', True)\nUnbind $x\nFinish implied with rule5\nUse rule6: Quiet($x, True) >>> Kind($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Kind('Charlie', True)\nUnbind $x\nBind $x to 'Erin'\nObtain an already known or implied fact: Kind('Erin', True)\nUnbind $x\nBind $x to 'Fiona'\nObtain an already known or implied fact: Kind('Fiona', True)\nUnbind $x\nFinish implied with rule6\nUse rule7: Big($x, True) >>> Kind($x, True)\nBind $x to 'Charlie'\nObtain an already known or implied fact: Kind('Charlie', True)\nUnbind $x\nFinish implied with rule7\nUse rule8: Green($x, True) >>> Big($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Big('Anne', True)\nReuse rule4: Big($x, True) && Blue($x, True) >>> Kind($x, True)\nBind $x to 'Anne'\nFinish implied with rule4\nReuse rule7: Big($x, True) >>> Kind($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Kind('Anne', True)\nReuse rule1: Kind($x, True) >>> Nice($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Nice('Anne', True)\nReuse rule5: Nice($x, True) >>> Quiet($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Quiet('Anne', True)\nReuse rule2: Round($x, True) && Quiet($x, True) >>> Blue($x, True)\nBind $x to 'Anne'\nFinish implied with rule2\nReuse rule6: Quiet($x, True) >>> Kind($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Kind('Anne', True)\nFinish implied with rule6\nFinish implied with rule5\nFinish implied with rule1\nReuse rule3: Kind(Charlie, True) >>> Big(Charlie, True)\nFinish implied with rule3\nFinish implied with rule7\nReuse rule4: Big($x, True) && Blue($x, True) >>> Kind($x, True)\nBind $x to 'Erin'\nFinish implied with rule4\nReuse rule7: Big($x, True) >>> Kind($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: Kind('Erin', True)\nFinish implied with rule7\nFinish implied with rule8\nUse rule9: Green(Anne, True) >>> Round(Anne, True)\nObtain a new implied fact: Round('Anne', True)\nReuse rule2: Round($x, True) && Quiet($x, True) >>> Blue($x, True)\nBind $x to 'Anne'\nObtain a new implied fact: Blue('Anne', True)\nReuse rule4: Big($x, True) && Blue($x, True) >>> Kind($x, True)\nBind $x to 'Anne'\nObtain an already known or implied fact: Kind('Anne', True)\nFinish implied with rule4\nFinish implied with rule2\nFinish implied with rule9\nAll newly implied Facts: Big('Anne', True), Blue('Anne', True), Blue('Charlie', True), Kind('Anne', True), Kind('Charlie', True), Nice('Anne', True), Nice('Charlie', True), Nice('Fiona', True), Quiet('Anne', True), Round('Anne', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "No Output"
+      }
+    }
+  },
+  {
+    "id": "ProofWriter_AttNeg-OWA-D5-203_Q21",
+    "context": "Charlie is cold. Charlie is young. Dave is cold. Erin is white. Fiona is nice. Fiona is white. Fiona is young. All blue things are white. If something is nice and blue then it is white. All young, blue things are not green. If something is white then it is nice. If something is nice then it is round. If Charlie is round then Charlie is white. All blue things are young. If something is cold and green then it is young. Round things are blue.",
+    "question": "Based on the above information, is the following statement true, false, or unknown? Fiona is not cold.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Unknown"
+    ],
+    "answer": "C",
+    "roles": {
+      "LP": {
+        "predict": "C",
+        "reasoning": "We first define following predicates and corresponding natural language explanations:\n  Cold($x, bool) ::: Is x cold?\n  Young($x, bool) ::: Is x young?\n  White($x, bool) ::: Is x white?\n  Nice($x, bool) ::: Is x nice?\n  Blue($x, bool) ::: Is x blue?\n  Green($x, bool) ::: Is x green?\n  Round($x, bool) ::: Is x round?\nWe have following known facts from the context:\n  Cold(Charlie, True)\n  Young(Charlie, True)\n  Cold(Dave, True)\n  White(Erin, True)\n  Nice(Fiona, True)\n  White(Fiona, True)\n  Young(Fiona, True)\nWe have following known rules from the context:\n  rule1: Blue($x, True) >>> White($x, True)\n  rule2: Nice($x, True) && Blue($x, True) >>> White($x, True)\n  rule3: Young($x, True) && Blue($x, True) >>> Green($x, False)\n  rule4: White($x, True) >>> Nice($x, True)\n  rule5: Nice($x, True) >>> Round($x, True)\n  rule6: Round(Charlie, True) >>> White(Charlie, True)\n  rule7: Blue($x, True) >>> Young($x, True)\n  rule8: Cold($x, True) && Green($x, True) >>> Young($x, True)\n  rule9: Round($x, True) >>> Blue($x, True)\nNow begin reasoning to obtain all implied facts:\nUse rule1: Blue($x, True) >>> White($x, True)\nFinish implied with rule1\nUse rule2: Nice($x, True) && Blue($x, True) >>> White($x, True)\nBind $x to 'Fiona'\nUnbind $x\nFinish implied with rule2\nUse rule3: Young($x, True) && Blue($x, True) >>> Green($x, False)\nBind $x to 'Charlie'\nUnbind $x\nBind $x to 'Fiona'\nUnbind $x\nFinish implied with rule3\nUse rule4: White($x, True) >>> Nice($x, True)\nBind $x to 'Erin'\nObtain a new implied fact: Nice('Erin', True)\nReuse rule2: Nice($x, True) && Blue($x, True) >>> White($x, True)\nBind $x to 'Erin'\nFinish implied with rule2\nUse rule5: Nice($x, True) >>> Round($x, True)\nFinish implied with rule5\nFinish implied with rule4\nReuse rule5: Nice($x, True) >>> Round($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Round('Fiona', True)\nUse rule6: Round(Charlie, True) >>> White(Charlie, True)\nFinish implied with rule6\nUse rule9: Round($x, True) >>> Blue($x, True)\nFinish implied with rule9\nReuse rule6: Round(Charlie, True) >>> White(Charlie, True)\nFinish implied with rule6\nReuse rule9: Round($x, True) >>> Blue($x, True)\nFinish implied with rule9\nFinish implied with rule5\nReuse rule6: Round(Charlie, True) >>> White(Charlie, True)\nFinish implied with rule6\nUse rule7: Blue($x, True) >>> Young($x, True)\nFinish implied with rule7\nUse rule8: Cold($x, True) && Green($x, True) >>> Young($x, True)\nBind $x to 'Charlie'\nUnbind $x\nBind $x to 'Dave'\nUnbind $x\nFinish implied with rule8\nReuse rule9: Round($x, True) >>> Blue($x, True)\nBind $x to 'Fiona'\nObtain a new implied fact: Blue('Fiona', True)\nReuse rule1: Blue($x, True) >>> White($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: White('Fiona', True)\nFinish implied with rule1\nReuse rule2: Nice($x, True) && Blue($x, True) >>> White($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: White('Fiona', True)\nFinish implied with rule2\nReuse rule3: Young($x, True) && Blue($x, True) >>> Green($x, False)\nBind $x to 'Fiona'\nObtain a new implied fact: Green('Fiona', False)\nReuse rule8: Cold($x, True) && Green($x, True) >>> Young($x, True)\nBind $x to 'Fiona'\nFinish implied with rule8\nFinish implied with rule3\nReuse rule7: Blue($x, True) >>> Young($x, True)\nBind $x to 'Fiona'\nObtain an already known or implied fact: Young('Fiona', True)\nFinish implied with rule7\nReuse rule1: Blue($x, True) >>> White($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: White('Erin', True)\nFinish implied with rule1\nReuse rule2: Nice($x, True) && Blue($x, True) >>> White($x, True)\nBind $x to 'Erin'\nObtain an already known or implied fact: White('Erin', True)\nFinish implied with rule2\nReuse rule3: Young($x, True) && Blue($x, True) >>> Green($x, False)\nBind $x to 'Erin'\nFinish implied with rule3\nReuse rule7: Blue($x, True) >>> Young($x, True)\nBind $x to 'Erin'\nObtain a new implied fact: Young('Erin', True)\nReuse rule3: Young($x, True) && Blue($x, True) >>> Green($x, False)\nBind $x to 'Erin'\nObtain a new implied fact: Green('Erin', False)\nReuse rule8: Cold($x, True) && Green($x, True) >>> Young($x, True)\nBind $x to 'Erin'\nFinish implied with rule8\nFinish implied with rule3\nFinish implied with rule7\nFinish implied with rule9\nAll newly implied Facts: Blue('Fiona', True), Green('Erin', False), Green('Fiona', False), Nice('Erin', True), Round('Fiona', True), Young('Erin', True)\nFinish reasoning",
+        "status_code": "success",
+        "error_message": ""
+      },
+      "FOL": {
+        "predict": "B",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "[Errno 13] Permission denied: '/Users/haochengyang/Desktop/logicalLLM/AAAI/multiagentdebate/solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/prover9'"
+      },
+      "SAT": {
+        "predict": "A",
+        "reasoning": "",
+        "status_code": "execution error",
+        "error_message": "No Output"
+      }
+    }
+  }
+]

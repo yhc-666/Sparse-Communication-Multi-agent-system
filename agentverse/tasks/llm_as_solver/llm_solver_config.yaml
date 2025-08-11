@@ -1,0 +1,117 @@
+task:
+  llm_solver
+data_path:
+  data/ProofWriter/dev.json
+output_dir: 
+  outputs/deepseek/ProofWriter/llm_solver
+
+# ---------- Execution Settings ----------
+execution:
+  # Enable role-level concurrency for each question
+  enable_role_concurrency: true
+  # Maximum number of concurrent roles per question
+  max_concurrent_roles: 3
+  # number of questions to process (0 = all)
+  max_questions: 20
+
+# ---------- LLM Configuration ----------
+llm_config:
+  mode: 'api' # local or api
+  
+  # API凭证配置
+  api_credentials:
+    openai_api_key: "sk-733e47bc35da4b49b0bc7ca99ede48f8"
+    openai_base_url: "https://api.deepseek.com/v1"
+  
+  api_settings:
+    model: "deepseek-chat"
+    llm_type: "deepseek-chat"
+    temperature: 0.1
+    max_tokens: 2048
+    top_p: 0.95
+    max_retry: 3
+    
+  local_settings:
+    model_path: "/mnt/sdb/ssuser/llm_models/Deepseek-14B"
+    llm_type: "deepseek-local"
+    temperature: 0.1
+    top_p: 0.95
+    top_k: 40
+    max_tokens: 1024
+    tensor_parallel_size: 1
+    gpu_memory_utilization: 0.9
+    max_model_len: 4096
+    trust_remote_code: true
+
+# ---------- Output Parser Configuration ----------
+# Note: parser_type is now specified per role below
+
+# ---------- Prompt Templates ----------
+prompt_templates:
+  cot_prompt: &cot_prompt |-
+    Given a problem statement as contexts, the task is to answer a logical reasoning question. 
+    ------
+    Context:
+    The cow is blue. The cow is round. The cow likes the lion. The cow visits the tiger. The lion is cold. The lion is nice. The lion likes the squirrel. The squirrel is round. The squirrel sees the lion. The squirrel visits the cow. The tiger likes the cow. The tiger likes the squirrel. If something is cold then it visits the tiger. If something visits the tiger then it is nice. If something sees the tiger and it is young then it is blue. If something is nice then it sees the tiger. If something likes the squirrel and it likes the cow then it visits the tiger. If something is nice and it sees the tiger then it is young. If the cow is cold and the cow visits the lion then the lion sees the squirrel.
+
+    Question: Based on the above information, is the following statement true, false, or unknown? The tiger is not young.
+
+    Options:
+    A) True
+    B) False
+    C) Unknown
+
+    <Reasoning>
+    The tiger likes the cow. The tiger likes the squirrel. If something likes the squirrel and it likes the cow, then it visits the tiger. So the tiger visits the tiger. If something visits the tiger then it is nice. So the tiger is nice. If something is nice and it sees the tiger then it is young. So the tiger is young.
+    <Answer>B
+    ------
+    Context:
+    The dog sees the rabbit. The dog sees the squirrel. The dog sees the tiger. The rabbit eats the dog. The rabbit does not eat the tiger. The rabbit does not like the tiger. The squirrel does not see the rabbit. The tiger does not eat the rabbit. The tiger is not kind. The tiger likes the dog. The tiger sees the dog. If something is cold then it likes the rabbit. If something eats the tiger and it is nice then it likes the rabbit. If something likes the squirrel then the squirrel likes the rabbit. If something likes the rabbit and the rabbit is kind then it sees the tiger. If something likes the tiger then the tiger is young. If something is young and it eats the rabbit then it likes the tiger. If something sees the rabbit then the rabbit is cold. If something likes the rabbit then it likes the squirrel. If something likes the squirrel then the squirrel is cold.
+
+    Question: Based on the above information, is the following statement true, false, or unknown? The rabbit is cold.
+
+    Options:
+    A) True
+    B) False
+    C) Uncertain
+
+    <Reasoning>
+    The dog sees the rabbit. If something sees the rabbit then the rabbit is cold. So the rabbit is cold.
+    <Answer>A
+    ------
+    Context: ${context}
+    Question: ${question}
+    Options: ${options}
+
+    ${role_description}
+    ${instruction}
+    Return **only** your reasoning and final choice in the format:
+    <Reasoning>YOUR_REASONING<Answer>ANSWER_LETTER
+
+  plan_and_solve_prompt: &plan_and_solve_prompt |-
+    Q: ${context}
+    ${question}
+    ${options}
+    A: ${instruction}
+
+# ---------- Role Definitions ----------
+roles:
+  - name: "cot_solver"
+    display_name: "COT Solver"
+    parser_type: "cot"
+    role_description: |-
+    instruction: |-
+    prompt_template: *cot_prompt
+
+  - name: "plan-and-solve"
+    display_name: "Plan-and-Solve"
+    agent_type: "plan_and_solve"
+    parser_type: "plan_and_solve"
+    role_description: ""
+    instruction: |-
+      Let's first understand the problem and devise a plan to solve the problem. Then, let's carry out the plan to solve the problem step by step.
+    extraction_trigger: "Therefore, the answer is (return a single answer letter in the format <answer>ANSWER_LETTER<answer/>)"
+    prompt_template: *plan_and_solve_prompt
+
+
+

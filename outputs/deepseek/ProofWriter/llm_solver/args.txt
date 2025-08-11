@@ -1,0 +1,1 @@
+Namespace(config='agentverse/tasks/llm_as_solver/llm_solver_config.yaml')
