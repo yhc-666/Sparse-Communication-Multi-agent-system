@@ -15,7 +15,7 @@ import os
 
 import json
 from tqdm import tqdm
-from eval_helper.get_evaluation import get_evaluation
+# from eval_helper.get_evaluation import get_evaluation  # Module doesn't exist, not needed for main datasets
 from translation_output_helper.get_translation_output import get_translation_output
 
 from agentverse.agentverse import AgentVerse
@@ -66,10 +66,11 @@ if "ruozhiba" in args_data_path:
             agentverse.agents[agent_id].final_prompt = ""
         agentverse.run()
 
-        evaluation = get_evaluation(setting="every_agent", messages=agentverse.agents[0].memory.messages, agent_nums=len(agentverse.agents))
+        # Note: eval_helper module doesn't exist, commenting out evaluation for ruozhiba
+        # evaluation = get_evaluation(setting="every_agent", messages=agentverse.agents[0].memory.messages, agent_nums=len(agentverse.agents))
 
         pair_comparison_output.append({"question": ins["instruction"],
-                                       "evaluation": evaluation})
+                                       "evaluation": "Not available - eval_helper module missing"})
 
         os.makedirs(args_output_dir, exist_ok=True)
         with open(os.path.join(args_output_dir, "pair_comparison_results.json"), "w") as f:
@@ -81,7 +82,7 @@ elif "ProofWriter" in args_data_path:
     # 处理ProofWriter数据集
     proof_writer_output = []
 
-    for num, ins in enumerate(tqdm(data[:30], desc="Processing ProofWriter", unit="instance")):
+    for num, ins in enumerate(tqdm(data, desc="Processing ProofWriter", unit="instance")):
         print(f"================================instance {num}====================================")
 
         for agent_id in range(len(agentverse.agents)):
@@ -91,8 +92,8 @@ elif "ProofWriter" in args_data_path:
 
         agentverse.run()
 
-        chat_history, translations = get_translation_output(setting="every_agent", messages=agentverse.agents[0].memory.messages,
-                                    agent_nums=len(agentverse.agents))
+        chat_history, translations = get_translation_output(setting="single_agent", messages=agentverse.agents[0].memory.messages,
+                                    agent_nums=1)
 
         proof_writer_output.append({
             "id": ins["id"],
@@ -101,7 +102,7 @@ elif "ProofWriter" in args_data_path:
             "options": ins["options"],
             "answer": ins["answer"],
             "chat_history": chat_history,
-            "translation": translations
+            "translation": translations[0] if translations else {}
         })
 
         os.makedirs(args_output_dir, exist_ok=True)
@@ -109,8 +110,8 @@ elif "ProofWriter" in args_data_path:
             json.dump(proof_writer_output, f, indent=4)
 
 elif "FOLIO" in args_data_path:
-# 处理ProofWriter数据集
-    smoketest_output = []
+    # 处理FOLIO数据集
+    folio_output = []
 
     for num, ins in enumerate(tqdm(data, desc="Processing FOLIO", unit="instance")):
         print(f"================================instance {num}====================================")
@@ -122,22 +123,53 @@ elif "FOLIO" in args_data_path:
 
         agentverse.run()
 
-        chat_history, translations = get_translation_output(setting="every_agent", messages=agentverse.agents[0].memory.messages,
-                                    agent_nums=len(agentverse.agents))
+        chat_history, translations = get_translation_output(setting="single_agent", messages=agentverse.agents[0].memory.messages,
+                                    agent_nums=1)
 
-        smoketest_output.append({
+        folio_output.append({
             "id": ins["id"],
             "context": ins["context"],
             "question": ins["question"],
             "options": ins["options"],
             "answer": ins["answer"],
             "chat_history": chat_history,
-            "translation": translations
+            "translation": translations[0] if translations else {}
         })
 
         os.makedirs(args_output_dir, exist_ok=True)
         with open(os.path.join(args_output_dir, "translation_results.json"), "w") as f:
-            json.dump(smoketest_output, f, indent=4)
+            json.dump(folio_output, f, indent=4)
+
+elif "ProntoQA" in args_data_path:
+    # 处理ProntoQA数据集
+    pronto_output = []
+
+    for num, ins in enumerate(tqdm(data, desc="Processing ProntoQA", unit="instance")):
+        print(f"================================instance {num}====================================")
+
+        for agent_id in range(len(agentverse.agents)):
+            agentverse.agents[agent_id].context = ins["context"]  # 赋值prompt template中的${context}字段
+            agentverse.agents[agent_id].question = ins["question"].strip()  # 赋值prompt template中的${question}字段
+            agentverse.agents[agent_id].final_prompt = ""
+
+        agentverse.run()
+
+        chat_history, translations = get_translation_output(setting="single_agent", messages=agentverse.agents[0].memory.messages,
+                                    agent_nums=1)
+
+        pronto_output.append({
+            "id": ins["id"],
+            "context": ins["context"],
+            "question": ins["question"],
+            "options": ins["options"],
+            "answer": ins["answer"],
+            "chat_history": chat_history,
+            "translation": translations[0] if translations else {}
+        })
+
+        os.makedirs(args_output_dir, exist_ok=True)
+        with open(os.path.join(args_output_dir, "translation_results.json"), "w") as f:
+            json.dump(pronto_output, f, indent=4)
 
 elif "LogicalDeduction" in args_data_path:
     # 处理LogicalDeduction数据集
@@ -157,8 +189,8 @@ elif "LogicalDeduction" in args_data_path:
 
         agentverse.run()
 
-        chat_history, translations = get_translation_output(setting="every_agent", messages=agentverse.agents[0].memory.messages,
-                                    agent_nums=len(agentverse.agents))
+        chat_history, translations = get_translation_output(setting="single_agent", messages=agentverse.agents[0].memory.messages,
+                                    agent_nums=1)
 
         logical_deduction_output.append({
             "id": ins["id"],
@@ -167,7 +199,7 @@ elif "LogicalDeduction" in args_data_path:
             "options": ins["options"],
             "answer": ins["answer"],
             "chat_history": chat_history,
-            "translation": translations
+            "translation": translations[0] if translations else {}
         })
 
         os.makedirs(args_output_dir, exist_ok=True)

@@ -1,0 +1,142 @@
+[
+    {
+        "id": "ProofWriter_AttNoneg-OWA-D5-1041_Q1",
+        "context": "Bob is cold. Bob is quiet. Bob is red. Bob is smart. Charlie is kind. Charlie is quiet. Charlie is red. Charlie is rough. Dave is cold. Dave is kind. Dave is smart. Fiona is quiet. If something is quiet and cold then it is smart. Red, cold things are round. If something is kind and rough then it is red. All quiet things are rough. Cold, smart things are red. If something is rough then it is cold. All red things are rough. If Dave is smart and Dave is kind then Dave is quiet.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? Charlie is kind.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "A",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nCold(x) ::: x is cold\nQuiet(x) ::: x is quiet\nRed(x) ::: x is red\nSmart(x) ::: x is smart\nKind(x) ::: x is kind\nRough(x) ::: x is rough\nRound(x) ::: x is round\nPremises:\nCold(bob) ::: Bob is cold\nQuiet(bob) ::: Bob is quiet\nRed(bob) ::: Bob is red\nSmart(bob) ::: Bob is smart\nKind(charlie) ::: Charlie is kind\nQuiet(charlie) ::: Charlie is quiet\nRed(charlie) ::: Charlie is red\nRough(charlie) ::: Charlie is rough\nCold(dave) ::: Dave is cold\nKind(dave) ::: Dave is kind\nSmart(dave) ::: Dave is smart\nQuiet(fiona) ::: Fiona is quiet\n\u2200x (Quiet(x) \u2227 Cold(x) \u2192 Smart(x)) ::: If something is quiet and cold then it is smart\n\u2200x (Red(x) \u2227 Cold(x) \u2192 Round(x)) ::: Red, cold things are round\n\u2200x (Kind(x) \u2227 Rough(x) \u2192 Red(x)) ::: If something is kind and rough then it is red\n\u2200x (Quiet(x) \u2192 Rough(x)) ::: All quiet things are rough\n\u2200x (Cold(x) \u2227 Smart(x) \u2192 Red(x)) ::: Cold, smart things are red\n\u2200x (Rough(x) \u2192 Cold(x)) ::: If something is rough then it is cold\n\u2200x (Red(x) \u2192 Rough(x)) ::: All red things are rough\nSmart(dave) \u2227 Kind(dave) \u2192 Quiet(dave) ::: If Dave is smart and Dave is kind then Dave is quiet\nConclusion:\nKind(charlie) ::: Charlie is kind"
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nCold(x) ::: x is cold\nQuiet(x) ::: x is quiet\nRed(x) ::: x is red\nSmart(x) ::: x is smart\nKind(x) ::: x is kind\nRough(x) ::: x is rough\nRound(x) ::: x is round\nPremises:\nCold(bob) ::: Bob is cold\nQuiet(bob) ::: Bob is quiet\nRed(bob) ::: Bob is red\nSmart(bob) ::: Bob is smart\nKind(charlie) ::: Charlie is kind\nQuiet(charlie) ::: Charlie is quiet\nRed(charlie) ::: Charlie is red\nRough(charlie) ::: Charlie is rough\nCold(dave) ::: Dave is cold\nKind(dave) ::: Dave is kind\nSmart(dave) ::: Dave is smart\nQuiet(fiona) ::: Fiona is quiet\n\u2200x (Quiet(x) \u2227 Cold(x) \u2192 Smart(x)) ::: If something is quiet and cold then it is smart\n\u2200x (Red(x) \u2227 Cold(x) \u2192 Round(x)) ::: Red, cold things are round\n\u2200x (Kind(x) \u2227 Rough(x) \u2192 Red(x)) ::: If something is kind and rough then it is red\n\u2200x (Quiet(x) \u2192 Rough(x)) ::: All quiet things are rough\n\u2200x (Cold(x) \u2227 Smart(x) \u2192 Red(x)) ::: Cold, smart things are red\n\u2200x (Rough(x) \u2192 Cold(x)) ::: If something is rough then it is cold\n\u2200x (Red(x) \u2192 Rough(x)) ::: All red things are rough\nSmart(dave) \u2227 Kind(dave) \u2192 Quiet(dave) ::: If Dave is smart and Dave is kind then Dave is quiet\nConclusion:\nKind(charlie) ::: Charlie is kind"
+        }
+    },
+    {
+        "id": "ProofWriter_RelNeg-OWA-D5-81_Q11",
+        "context": "The cat eats the squirrel. The cat sees the squirrel. The cow eats the squirrel. The cow sees the cat. The rabbit is round. The rabbit sees the cat. The squirrel eats the rabbit. The squirrel is cold. The squirrel needs the rabbit. The squirrel sees the cat. If someone sees the cat and they are not green then they see the cow. If the rabbit is kind and the rabbit sees the squirrel then the squirrel needs the rabbit. Rough people are cold. If someone sees the rabbit then they are not round. If someone sees the squirrel and they are not green then they need the squirrel. If someone eats the cow then they see the rabbit. If someone eats the squirrel then they are rough. If someone is cold then they eat the cow.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? The cat is not round.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "A",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nEats(x, y) ::: x eats y\nSees(x, y) ::: x sees y\nRound(x) ::: x is round\nCold(x) ::: x is cold\nNeeds(x, y) ::: x needs y\nGreen(x) ::: x is green\nKind(x) ::: x is kind\nRough(x) ::: x is rough\nPremises:\nEats(cat, squirrel) ::: The cat eats the squirrel.\nSees(cat, squirrel) ::: The cat sees the squirrel.\nEats(cow, squirrel) ::: The cow eats the squirrel.\nSees(cow, cat) ::: The cow sees the cat.\nRound(rabbit) ::: The rabbit is round.\nSees(rabbit, cat) ::: The rabbit sees the cat.\nEats(squirrel, rabbit) ::: The squirrel eats the rabbit.\nCold(squirrel) ::: The squirrel is cold.\nNeeds(squirrel, rabbit) ::: The squirrel needs the rabbit.\nSees(squirrel, cat) ::: The squirrel sees the cat.\n\u2200x (Sees(x, cat) \u2227 \u00acGreen(x) \u2192 Sees(x, cow)) ::: If someone sees the cat and they are not green then they see the cow.\n(Kind(rabbit) \u2227 Sees(rabbit, squirrel) \u2192 Needs(squirrel, rabbit)) ::: If the rabbit is kind and the rabbit sees the squirrel then the squirrel needs the rabbit.\n\u2200x (Rough(x) \u2192 Cold(x)) ::: Rough people are cold.\n\u2200x (Sees(x, rabbit) \u2192 \u00acRound(x)) ::: If someone sees the rabbit then they are not round.\n\u2200x (Sees(x, squirrel) \u2227 \u00acGreen(x) \u2192 Needs(x, squirrel)) ::: If someone sees the squirrel and they are not green then they need the squirrel.\n\u2200x (Eats(x, cow) \u2192 Sees(x, rabbit)) ::: If someone eats the cow then they see the rabbit.\n\u2200x (Eats(x, squirrel) \u2192 Rough(x)) ::: If someone eats the squirrel then they are rough.\n\u2200x (Cold(x) \u2192 Eats(x, cow)) ::: If someone is cold then they eat the cow.\nConclusion:\n\u00acRound(cat) ::: The cat is not round."
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nEats(x, y) ::: x eats y\nSees(x, y) ::: x sees y\nRound(x) ::: x is round\nCold(x) ::: x is cold\nNeeds(x, y) ::: x needs y\nGreen(x) ::: x is green\nKind(x) ::: x is kind\nRough(x) ::: x is rough\nPremises:\nEats(cat, squirrel) ::: The cat eats the squirrel.\nSees(cat, squirrel) ::: The cat sees the squirrel.\nEats(cow, squirrel) ::: The cow eats the squirrel.\nSees(cow, cat) ::: The cow sees the cat.\nRound(rabbit) ::: The rabbit is round.\nSees(rabbit, cat) ::: The rabbit sees the cat.\nEats(squirrel, rabbit) ::: The squirrel eats the rabbit.\nCold(squirrel) ::: The squirrel is cold.\nNeeds(squirrel, rabbit) ::: The squirrel needs the rabbit.\nSees(squirrel, cat) ::: The squirrel sees the cat.\n\u2200x (Sees(x, cat) \u2227 \u00acGreen(x) \u2192 Sees(x, cow)) ::: If someone sees the cat and they are not green then they see the cow.\n(Kind(rabbit) \u2227 Sees(rabbit, squirrel) \u2192 Needs(squirrel, rabbit)) ::: If the rabbit is kind and the rabbit sees the squirrel then the squirrel needs the rabbit.\n\u2200x (Rough(x) \u2192 Cold(x)) ::: Rough people are cold.\n\u2200x (Sees(x, rabbit) \u2192 \u00acRound(x)) ::: If someone sees the rabbit then they are not round.\n\u2200x (Sees(x, squirrel) \u2227 \u00acGreen(x) \u2192 Needs(x, squirrel)) ::: If someone sees the squirrel and they are not green then they need the squirrel.\n\u2200x (Eats(x, cow) \u2192 Sees(x, rabbit)) ::: If someone eats the cow then they see the rabbit.\n\u2200x (Eats(x, squirrel) \u2192 Rough(x)) ::: If someone eats the squirrel then they are rough.\n\u2200x (Cold(x) \u2192 Eats(x, cow)) ::: If someone is cold then they eat the cow.\nConclusion:\n\u00acRound(cat) ::: The cat is not round."
+        }
+    },
+    {
+        "id": "ProofWriter_AttNoneg-OWA-D5-1284_Q8",
+        "context": "Anne is furry. Anne is nice. Anne is smart. Bob is young. Erin is nice. Harry is smart. Harry is young. Young things are furry. Nice, furry things are green. All green things are nice. Nice, green things are big. All green things are smart. If something is big and young then it is round. All green things are big. If Harry is young then Harry is furry. Furry, smart things are nice.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? Harry is not green.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "B",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nFurry(x) ::: x is furry\nNice(x) ::: x is nice\nSmart(x) ::: x is smart\nYoung(x) ::: x is young\nGreen(x) ::: x is green\nBig(x) ::: x is big\nRound(x) ::: x is round\nPremises:\nFurry(anne) ::: Anne is furry\nNice(anne) ::: Anne is nice\nSmart(anne) ::: Anne is smart\nYoung(bob) ::: Bob is young\nNice(erin) ::: Erin is nice\nSmart(harry) ::: Harry is smart\nYoung(harry) ::: Harry is young\n\u2200x (Young(x) \u2192 Furry(x)) ::: Young things are furry\n\u2200x (Nice(x) \u2227 Furry(x) \u2192 Green(x)) ::: Nice, furry things are green\n\u2200x (Green(x) \u2192 Nice(x)) ::: All green things are nice\n\u2200x (Nice(x) \u2227 Green(x) \u2192 Big(x)) ::: Nice, green things are big\n\u2200x (Green(x) \u2192 Smart(x)) ::: All green things are smart\n\u2200x (Big(x) \u2227 Young(x) \u2192 Round(x)) ::: If something is big and young then it is round\n\u2200x (Green(x) \u2192 Big(x)) ::: All green things are big\nYoung(harry) \u2192 Furry(harry) ::: If Harry is young then Harry is furry\n\u2200x (Furry(x) \u2227 Smart(x) \u2192 Nice(x)) ::: Furry, smart things are nice\nConclusion:\n\u00acGreen(harry) ::: Harry is not green"
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nFurry(x) ::: x is furry\nNice(x) ::: x is nice\nSmart(x) ::: x is smart\nYoung(x) ::: x is young\nGreen(x) ::: x is green\nBig(x) ::: x is big\nRound(x) ::: x is round\nPremises:\nFurry(anne) ::: Anne is furry\nNice(anne) ::: Anne is nice\nSmart(anne) ::: Anne is smart\nYoung(bob) ::: Bob is young\nNice(erin) ::: Erin is nice\nSmart(harry) ::: Harry is smart\nYoung(harry) ::: Harry is young\n\u2200x (Young(x) \u2192 Furry(x)) ::: Young things are furry\n\u2200x (Nice(x) \u2227 Furry(x) \u2192 Green(x)) ::: Nice, furry things are green\n\u2200x (Green(x) \u2192 Nice(x)) ::: All green things are nice\n\u2200x (Nice(x) \u2227 Green(x) \u2192 Big(x)) ::: Nice, green things are big\n\u2200x (Green(x) \u2192 Smart(x)) ::: All green things are smart\n\u2200x (Big(x) \u2227 Young(x) \u2192 Round(x)) ::: If something is big and young then it is round\n\u2200x (Green(x) \u2192 Big(x)) ::: All green things are big\nYoung(harry) \u2192 Furry(harry) ::: If Harry is young then Harry is furry\n\u2200x (Furry(x) \u2227 Smart(x) \u2192 Nice(x)) ::: Furry, smart things are nice\nConclusion:\n\u00acGreen(harry) ::: Harry is not green"
+        }
+    },
+    {
+        "id": "ProofWriter_AttNoneg-OWA-D5-585_Q19",
+        "context": "Anne is round. Bob is red. Bob is smart. Erin is furry. Erin is red. Erin is rough. Erin is smart. Fiona is big. Fiona is furry. Fiona is smart. All smart things are furry. All furry things are red. All round things are rough. If Bob is white then Bob is furry. All red, rough things are big. All rough things are smart. If Fiona is furry then Fiona is red. If Bob is round and Bob is big then Bob is furry. If Fiona is red and Fiona is white then Fiona is smart.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? Bob is not white.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "C",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nRound(x) ::: x is round\nRed(x) ::: x is red\nSmart(x) ::: x is smart\nFurry(x) ::: x is furry\nRough(x) ::: x is rough\nBig(x) ::: x is big\nWhite(x) ::: x is white\nPremises:\nRound(anne)\nRed(bob)\nSmart(bob)\nFurry(erin)\nRed(erin)\nRough(erin)\nSmart(erin)\nBig(fiona)\nFurry(fiona)\nSmart(fiona)\n\u2200x (Smart(x) \u2192 Furry(x))\n\u2200x (Furry(x) \u2192 Red(x))\n\u2200x (Round(x) \u2192 Rough(x))\n(White(bob) \u2192 Furry(bob)\n\u2200x (Red(x) \u2227 Rough(x) \u2192 Big(x))\n\u2200x (Rough(x) \u2192 Smart(x))\n(Furry(fiona) \u2192 Red(fiona))\n(Round(bob) \u2227 Big(bob)) \u2192 Furry(bob)\n(Red(fiona) \u2227 White(fiona)) \u2192 Smart(fiona)\nConclusion:\n\u00acWhite(bob) ::: Bob is not white."
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nRound(x) ::: x is round\nRed(x) ::: x is red\nSmart(x) ::: x is smart\nFurry(x) ::: x is furry\nRough(x) ::: x is rough\nBig(x) ::: x is big\nWhite(x) ::: x is white\nPremises:\nRound(anne)\nRed(bob)\nSmart(bob)\nFurry(erin)\nRed(erin)\nRough(erin)\nSmart(erin)\nBig(fiona)\nFurry(fiona)\nSmart(fiona)\n\u2200x (Smart(x) \u2192 Furry(x))\n\u2200x (Furry(x) \u2192 Red(x))\n\u2200x (Round(x) \u2192 Rough(x))\n(White(bob) \u2192 Furry(bob)\n\u2200x (Red(x) \u2227 Rough(x) \u2192 Big(x))\n\u2200x (Rough(x) \u2192 Smart(x))\n(Furry(fiona) \u2192 Red(fiona))\n(Round(bob) \u2227 Big(bob)) \u2192 Furry(bob)\n(Red(fiona) \u2227 White(fiona)) \u2192 Smart(fiona)\nConclusion:\n\u00acWhite(bob) ::: Bob is not white."
+        }
+    },
+    {
+        "id": "ProofWriter_RelNoneg-OWA-D5-949_Q8",
+        "context": "The bear is green. The bear likes the cat. The bear likes the dog. The bear visits the dog. The cat is young. The cat sees the bear. The cat sees the dog. The cat visits the bear. The cat visits the mouse. The dog is round. The dog likes the bear. The dog likes the mouse. The dog visits the mouse. The mouse is big. The mouse is cold. The mouse is round. If something visits the mouse and the mouse visits the dog then it is cold. If something likes the cat then it visits the dog. If something is cold then it likes the cat. If something is green then it sees the dog. If something likes the mouse then it sees the cat. If something is green and cold then it likes the cat. If something is big and it visits the bear then the bear is green.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? The cat is not cold.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "B",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nBear(x) ::: x is a bear\nCat(x) ::: x is a cat\nDog(x) ::: x is a dog\nMouse(x) ::: x is a mouse\nGreen(x) ::: x is green\nLikes(x, y) ::: x likes y\nVisits(x, y) ::: x visits y\nYoung(x) ::: x is young\nSees(x, y) ::: x sees y\nRound(x) ::: x is round\nBig(x) ::: x is big\nCold(x) ::: x is cold\nPremises:\nBear(bear) ::: The bear is green.\nGreen(bear) ::: The bear is green.\nLikes(bear, cat) ::: The bear likes the cat.\nLikes(bear, dog) ::: The bear likes the dog.\nVisits(bear, dog) ::: The bear visits the dog.\nCat(cat) ::: The cat is young.\nYoung(cat) ::: The cat is young.\nSees(cat, bear) ::: The cat sees the bear.\nSees(cat, dog) ::: The cat sees the dog.\nVisits(cat, bear) ::: The cat visits the bear.\nVisits(cat, mouse) ::: The cat visits the mouse.\nDog(dog) ::: The dog is round.\nRound(dog) ::: The dog is round.\nLikes(dog, bear) ::: The dog likes the bear.\nLikes(dog, mouse) ::: The dog likes the mouse.\nVisits(dog, mouse) ::: The dog visits the mouse.\nMouse(mouse) ::: The mouse is big.\nBig(mouse) ::: The mouse is big.\nCold(mouse) ::: The mouse is cold.\nRound(mouse) ::: The mouse is round.\n\u2200x (Visits(x, mouse) \u2227 Visits(mouse, dog) \u2192 Cold(x)) ::: If something visits the mouse and the mouse visits the dog then it is cold.\n\u2200x (Likes(x, cat) \u2192 Visits(x, dog)) ::: If something likes the cat then it visits the dog.\n\u2200x (Cold(x) \u2192 Likes(x, cat)) ::: If something is cold then it likes the cat.\n\u2200x (Green(x) \u2192 Sees(x, dog)) ::: If something is green then it sees the dog.\n\u2200x (Likes(x, mouse) \u2192 Sees(x, cat)) ::: If something likes the mouse then it sees the cat.\n\u2200x (Green(x) \u2227 Cold(x) \u2192 Likes(x, cat)) ::: If something is green and cold then it likes the cat.\n\u2200x (Big(x) \u2227 Visits(x, bear) \u2192 Green(bear)) ::: If something is big and it visits the bear then the bear is green.\nConclusion:\n\u00acCold(cat) ::: The cat is not cold."
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nBear(x) ::: x is a bear\nCat(x) ::: x is a cat\nDog(x) ::: x is a dog\nMouse(x) ::: x is a mouse\nGreen(x) ::: x is green\nLikes(x, y) ::: x likes y\nVisits(x, y) ::: x visits y\nYoung(x) ::: x is young\nSees(x, y) ::: x sees y\nRound(x) ::: x is round\nBig(x) ::: x is big\nCold(x) ::: x is cold\nPremises:\nBear(bear) ::: The bear is green.\nGreen(bear) ::: The bear is green.\nLikes(bear, cat) ::: The bear likes the cat.\nLikes(bear, dog) ::: The bear likes the dog.\nVisits(bear, dog) ::: The bear visits the dog.\nCat(cat) ::: The cat is young.\nYoung(cat) ::: The cat is young.\nSees(cat, bear) ::: The cat sees the bear.\nSees(cat, dog) ::: The cat sees the dog.\nVisits(cat, bear) ::: The cat visits the bear.\nVisits(cat, mouse) ::: The cat visits the mouse.\nDog(dog) ::: The dog is round.\nRound(dog) ::: The dog is round.\nLikes(dog, bear) ::: The dog likes the bear.\nLikes(dog, mouse) ::: The dog likes the mouse.\nVisits(dog, mouse) ::: The dog visits the mouse.\nMouse(mouse) ::: The mouse is big.\nBig(mouse) ::: The mouse is big.\nCold(mouse) ::: The mouse is cold.\nRound(mouse) ::: The mouse is round.\n\u2200x (Visits(x, mouse) \u2227 Visits(mouse, dog) \u2192 Cold(x)) ::: If something visits the mouse and the mouse visits the dog then it is cold.\n\u2200x (Likes(x, cat) \u2192 Visits(x, dog)) ::: If something likes the cat then it visits the dog.\n\u2200x (Cold(x) \u2192 Likes(x, cat)) ::: If something is cold then it likes the cat.\n\u2200x (Green(x) \u2192 Sees(x, dog)) ::: If something is green then it sees the dog.\n\u2200x (Likes(x, mouse) \u2192 Sees(x, cat)) ::: If something likes the mouse then it sees the cat.\n\u2200x (Green(x) \u2227 Cold(x) \u2192 Likes(x, cat)) ::: If something is green and cold then it likes the cat.\n\u2200x (Big(x) \u2227 Visits(x, bear) \u2192 Green(bear)) ::: If something is big and it visits the bear then the bear is green.\nConclusion:\n\u00acCold(cat) ::: The cat is not cold."
+        }
+    },
+    {
+        "id": "ProofWriter_RelNeg-OWA-D5-508_Q2",
+        "context": "The bald eagle is big. The bald eagle is cold. The bald eagle is young. The cat is not kind. The cow is red. The cow likes the bald eagle. The squirrel visits the bald eagle. If something likes the cow then the cow likes the squirrel. All big things are cold. If the squirrel is red then the squirrel is young. If something likes the squirrel then the squirrel is red. If something is young then it likes the cow. If the squirrel likes the cat and the cow does not chase the squirrel then the cat likes the cow. If something visits the squirrel and the squirrel is big then it does not like the squirrel. If something is big then it visits the cow. If something visits the squirrel and it is not red then the squirrel does not visit the bald eagle.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? The cow is not red.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "B",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nBig(x) ::: x is big\nCold(x) ::: x is cold\nYoung(x) ::: x is young\nKind(x) ::: x is kind\nRed(x) ::: x is red\nLikes(x, y) ::: x likes y\nVisits(x, y) ::: x visits y\nChases(x, y) ::: x chases y\nPremises:\nBig(bald_eagle) ::: The bald eagle is big.\nCold(bald_eagle) ::: The bald eagle is cold.\nYoung(bald_eagle) ::: The bald eagle is young.\n\u00acKind(cat) ::: The cat is not kind.\nRed(cow) ::: The cow is red.\nLikes(cow, bald_eagle) ::: The cow likes the bald eagle.\nVisits(squirrel, bald_eagle) ::: The squirrel visits the bald eagle.\n\u2200x (Likes(x, cow) \u2192 Likes(cow, squirrel)) ::: If something likes the cow then the cow likes the squirrel.\n\u2200x (Big(x) \u2192 Cold(x)) ::: All big things are cold.\nRed(squirrel) \u2192 Young(squirrel) ::: If the squirrel is red then the squirrel is young.\n\u2200x (Likes(x, squirrel) \u2192 Red(squirrel)) ::: If something likes the squirrel then the squirrel is red.\n\u2200x (Young(x) \u2192 Likes(x, cow)) ::: If something is young then it likes the cow.\n(Likes(squirrel, cat) \u2227 \u00acChases(cow, squirrel)) \u2192 Likes(cat, cow) ::: If the squirrel likes the cat and the cow does not chase the squirrel then the cat likes the cow.\n\u2200x (Visits(x, squirrel) \u2227 Big(squirrel) \u2192 \u00acLikes(x, squirrel)) ::: If something visits the squirrel and the squirrel is big then it does not like the squirrel.\n\u2200x (Big(x) \u2192 Visits(x, cow)) ::: If something is big then it visits the cow.\n\u2200x (Visits(x, squirrel) \u2227 \u00acRed(x) \u2192 \u00acVisits(squirrel, bald_eagle)) ::: If something visits the squirrel and it is not red then the squirrel does not visit the bald eagle.\nConclusion:\n\u00acRed(cow) ::: The cow is not red."
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nBig(x) ::: x is big\nCold(x) ::: x is cold\nYoung(x) ::: x is young\nKind(x) ::: x is kind\nRed(x) ::: x is red\nLikes(x, y) ::: x likes y\nVisits(x, y) ::: x visits y\nChases(x, y) ::: x chases y\nPremises:\nBig(bald_eagle) ::: The bald eagle is big.\nCold(bald_eagle) ::: The bald eagle is cold.\nYoung(bald_eagle) ::: The bald eagle is young.\n\u00acKind(cat) ::: The cat is not kind.\nRed(cow) ::: The cow is red.\nLikes(cow, bald_eagle) ::: The cow likes the bald eagle.\nVisits(squirrel, bald_eagle) ::: The squirrel visits the bald eagle.\n\u2200x (Likes(x, cow) \u2192 Likes(cow, squirrel)) ::: If something likes the cow then the cow likes the squirrel.\n\u2200x (Big(x) \u2192 Cold(x)) ::: All big things are cold.\nRed(squirrel) \u2192 Young(squirrel) ::: If the squirrel is red then the squirrel is young.\n\u2200x (Likes(x, squirrel) \u2192 Red(squirrel)) ::: If something likes the squirrel then the squirrel is red.\n\u2200x (Young(x) \u2192 Likes(x, cow)) ::: If something is young then it likes the cow.\n(Likes(squirrel, cat) \u2227 \u00acChases(cow, squirrel)) \u2192 Likes(cat, cow) ::: If the squirrel likes the cat and the cow does not chase the squirrel then the cat likes the cow.\n\u2200x (Visits(x, squirrel) \u2227 Big(squirrel) \u2192 \u00acLikes(x, squirrel)) ::: If something visits the squirrel and the squirrel is big then it does not like the squirrel.\n\u2200x (Big(x) \u2192 Visits(x, cow)) ::: If something is big then it visits the cow.\n\u2200x (Visits(x, squirrel) \u2227 \u00acRed(x) \u2192 \u00acVisits(squirrel, bald_eagle)) ::: If something visits the squirrel and it is not red then the squirrel does not visit the bald eagle.\nConclusion:\n\u00acRed(cow) ::: The cow is not red."
+        }
+    },
+    {
+        "id": "ProofWriter_AttNeg-OWA-D5-270_Q8",
+        "context": "Charlie is green. Dave is quiet. Dave is red. Dave is not white. Erin is not big. Erin is not cold. Erin is green. Harry is big. Harry is cold. Harry is green. If someone is red then they are not white. If Charlie is quiet then Charlie is blue. If someone is quiet and red then they are blue. All white people are cold. All green people are quiet. All blue, green people are red. If someone is red and not white then they are big.",
+        "question": "Based on the above information, is the following statement true, false, or unknown? Charlie is not red.",
+        "options": [
+            "A) True",
+            "B) False",
+            "C) Unknown"
+        ],
+        "answer": "B",
+        "chat_history": [
+            {
+                "role": "FOL translator",
+                "content": "Predicates:\nGreen(x) ::: x is green\nQuiet(x) ::: x is quiet\nRed(x) ::: x is red\nWhite(x) ::: x is white\nBig(x) ::: x is big\nCold(x) ::: x is cold\nBlue(x) ::: x is blue\nPremises:\nGreen(charlie) ::: Charlie is green.\nQuiet(dave) ::: Dave is quiet.\nRed(dave) ::: Dave is red.\n\u00acWhite(dave) ::: Dave is not white.\n\u00acBig(erin) ::: Erin is not big.\n\u00acCold(erin) ::: Erin is not cold.\nGreen(erin) ::: Erin is green.\nBig(harry) ::: Harry is big.\nCold(harry) ::: Harry is cold.\nGreen(harry) ::: Harry is green.\n\u2200x (Red(x) \u2192 \u00acWhite(x)) ::: If someone is red then they are not white.\n(Quiet(charlie) \u2192 Blue(charlie)) ::: If Charlie is quiet then Charlie is blue.\n\u2200x ((Quiet(x) \u2227 Red(x)) \u2192 Blue(x)) ::: If someone is quiet and red then they are blue.\n\u2200x (White(x) \u2192 Cold(x)) ::: All white people are cold.\n\u2200x (Green(x) \u2192 Quiet(x)) ::: All green people are quiet.\n\u2200x ((Blue(x) \u2227 Green(x)) \u2192 Red(x)) ::: All blue, green people are red.\n\u2200x ((Red(x) \u2227 \u00acWhite(x)) \u2192 Big(x)) ::: If someone is red and not white then they are big.\nConclusion:\n\u00acRed(charlie) ::: Charlie is not red."
+            }
+        ],
+        "translation": {
+            "FOL": "Predicates:\nGreen(x) ::: x is green\nQuiet(x) ::: x is quiet\nRed(x) ::: x is red\nWhite(x) ::: x is white\nBig(x) ::: x is big\nCold(x) ::: x is cold\nBlue(x) ::: x is blue\nPremises:\nGreen(charlie) ::: Charlie is green.\nQuiet(dave) ::: Dave is quiet.\nRed(dave) ::: Dave is red.\n\u00acWhite(dave) ::: Dave is not white.\n\u00acBig(erin) ::: Erin is not big.\n\u00acCold(erin) ::: Erin is not cold.\nGreen(erin) ::: Erin is green.\nBig(harry) ::: Harry is big.\nCold(harry) ::: Harry is cold.\nGreen(harry) ::: Harry is green.\n\u2200x (Red(x) \u2192 \u00acWhite(x)) ::: If someone is red then they are not white.\n(Quiet(charlie) \u2192 Blue(charlie)) ::: If Charlie is quiet then Charlie is blue.\n\u2200x ((Quiet(x) \u2227 Red(x)) \u2192 Blue(x)) ::: If someone is quiet and red then they are blue.\n\u2200x (White(x) \u2192 Cold(x)) ::: All white people are cold.\n\u2200x (Green(x) \u2192 Quiet(x)) ::: All green people are quiet.\n\u2200x ((Blue(x) \u2227 Green(x)) \u2192 Red(x)) ::: All blue, green people are red.\n\u2200x ((Red(x) \u2227 \u00acWhite(x)) \u2192 Big(x)) ::: If someone is red and not white then they are big.\nConclusion:\n\u00acRed(charlie) ::: Charlie is not red."
+        }
+    }
+]

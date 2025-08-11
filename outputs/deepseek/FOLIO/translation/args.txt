@@ -1,1 +1,0 @@
-Namespace(config='agentverse/tasks/nl_sl_translation/translate_config.yaml', reverse_input=False)

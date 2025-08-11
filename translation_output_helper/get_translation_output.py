@@ -27,7 +27,17 @@ def get_translation_output(setting: Optional[str] = None, messages: Optional[Lis
         "SAT translator": "SAT"
     }
     
-    if setting == "every_agent" and messages is not None and agent_nums is not None:
+    if setting == "single_agent" and messages is not None:
+        # For single agent, single turn
+        if messages:
+            last_message = messages[-1]
+            chat_history.append({
+                "role": last_message.sender,
+                "content": last_message.content
+            })
+            translations.append({"FOL": last_message.content.strip()})
+            
+    elif setting == "every_agent" and messages is not None and agent_nums is not None:
         for message in messages:
             chat_history.append({
                 "role": message.sender,

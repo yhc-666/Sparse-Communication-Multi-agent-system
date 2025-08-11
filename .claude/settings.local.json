@@ -5,7 +5,8 @@
       "Bash(find:*)",
       "Bash(python:*)",
       "Bash(pip show:*)",
-      "mcp__ide__executeCode"
+      "mcp__ide__executeCode",
+      "Bash(tree:*)"
     ],
     "deny": []
   }

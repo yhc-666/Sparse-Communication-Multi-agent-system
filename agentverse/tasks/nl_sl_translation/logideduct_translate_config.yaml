@@ -5,55 +5,36 @@ dataset:
 data_path:
   data/LogicalDeduction/dev.json
 output_dir:
-  outputs/deepseek/LogicalDeduction/translation
+  outputs/translation/LogicalDeduction
 prompts:
   # ${chat_history} 之前的放在system, 之后的放在user
   prompt: &prompt |-
-    You are given a logic problem including a context and a question as follows:
+    You are given a logic problem including a context, question, and options.
     Context: ${context}
     Question: ${question}
     Options: ${options}
-    From your perspective, please give your understanding of the question and context,and discuss with your opponent about the parsing of the question.
-    Think about the advantages and disadvantages of each language, and keep the original format of each language, correct the current language by referring to other languages.
-    Here is your discussion history:
-    ${chat_history} 
     ${role_description}
-    ${turn_specific_instruction}
+    
+    Please translate this problem into First-Order Logic format.
+    Return **only** Predicates, Premises, and Conclusion.
 
 llm_config:
-  # 模式选择: 'api' 使用API调用, 'local' 使用本地LLM
-  mode: 'api'  # 可选: 'api' 或 'local'
-  
-  # API凭证配置
+  mode: 'api' 
+
   api_credentials:
     openai_api_key: "sk-733e47bc35da4b49b0bc7ca99ede48f8"
     openai_base_url: "https://api.deepseek.com/v1"
   
-  # API模式配置
   api_settings:
     model: "deepseek-chat"    # API调用的模型名称，直接传递给OpenAI兼容的API, 在 agentverse/llms/openai.py 中，通过 client.chat.completions.create(messages=messages, **self.args.dict()) 调用时，model 字段会被传递给API服务器
-    llm_type: "gpt-4.1" #"deepseek-chat"  # LLM类选择：在 agentverse/initialization.py 的 load_llm() 函数中，通过 llm_registry.build(llm_type, **llm_config) 来选择具体的LLM实现类   注册系统：通过装饰器 @llm_registry.register() 将不同的LLM类注册到系统中
+    llm_type: "deepseek-chat" #"deepseek-chat"  # LLM类选择：在 agentverse/initialization.py 的 load_llm() 函数中，通过 llm_registry.build(llm_type, **llm_config) 来选择具体的LLM实现类   注册系统：通过装饰器 @llm_registry.register() 将不同的LLM类注册到系统中
     temperature: 0
     max_tokens: 1250
     max_retry: 2
-    
-  # 本地LLM模式配置  
-  local_settings:
-    model_path: "/mnt/sdb/ssuser/llm_models/Deepseek-14B"
-    llm_type: "deepseek-local"
-    temperature: 0.7
-    top_p: 0.9
-    top_k: 50
-    max_tokens: 5120
-    tensor_parallel_size: 1
-    gpu_memory_utilization: 0.9
-    max_model_len: 4096
-    trust_remote_code: true
-    max_retry: 3
 
 environment:
   env_type: llm_eval
-  max_turns: 6    # 必须是3的倍数
+  max_turns: 1    # Single turn for direct translation
   rule:
     order:
       type: concurrent # concurrent/sequential
@@ -69,76 +50,10 @@ environment:
 agents:
   -
     agent_type: llm_eval_multi
-    name: LP translator
-    final_prompt_to_use: |-
-      After discussion, now you need to give your final output. 
-      Please ensure that the output format has no syntax error, such as unclosed parentheses, etc.
-      Return **only** Predicates, Facts, Rules, and Query.
-    normal_turn_instruction: |-
-      Now it's your turn to speak. Please speak as concisely and clearly as possible, ${agent_name} !
-    role_description: |-
-      You are given a problem description and a question. The task is to:
-      1. define all the predicates in the problem
-      2. parse the problem into logic rules based on the defined predicates
-      3. write all the facts mentioned in the problem
-      4. parse the question into the logic form (Use && to represent AND)
-      5. **Finite derivations** :Avoid rules that introduce new Skolem‑like symbols or anonymous constants.
-      ----------------
-      Example:
-      context: The following paragraphs each describe a set of five objects arranged in a fixed order. The statements are logically consistent within each paragraph.\n\nOn a shelf, there are five books: a white book, an orange book, a yellow book, a blue book, and a red book. The yellow book is to the left of the white book. The red book is to the right of the blue book. The yellow book is to the right of the orange book. The blue book is to the right of the white book.
-      question: Which of the following is true?
-      options: 
-      A) The white book is the second from the right.
-      B) The orange book is the second from the right.
-      C) The yellow book is the second from the right.
-      D) The blue book is the second from the right.
-      E) The red book is the second from the right.
-
-      Predicates:
-      Book($x, bool)                  ::: $x is one of the five books.
-      LeftOf($x, $y, bool)            ::: Book $x is strictly to the left of book $y.
-      RightOf($x, $y, bool)           ::: Book $x is strictly to the right of book $y.
-      RightMost($x, bool)             ::: Book $x is the right‑most book on the shelf.
-      SecondFromRight($x, bool)       ::: Book $x is the second book from the right.
-
-      Facts:
-      Book(white,  True)              ::: The white book.
-      Book(orange, True)              ::: The orange book.
-      Book(yellow, True)              ::: The yellow book.
-      Book(blue,   True)              ::: The blue book.
-      Book(red,    True)              ::: The red book.
-      LeftOf(yellow, white,  True)    ::: The yellow book is to the left of the white book.
-      RightOf(red,   blue,   True)    ::: The red book is to the right of the blue book.
-      RightOf(yellow, orange, True)   ::: The yellow book is to the right of the orange book.
-      RightOf(blue,  white,  True)    ::: The blue book is to the right of the white book.
-
-      Rules:
-      LeftOf($a, $b, True) >>> RightOf($b, $a, True) ::: If $a is left of $b, then $b is right of $a.
-      RightOf($a, $b, True) >>> LeftOf($b, $a, True) ::: If $a is right of $b, then $b is left of $a.
-      RightOf($a, $b, True) && RightOf($b, $c, True) >>> RightOf($a, $c, True) ::: Right‑of is transitive.
-      RightOf($b, white,  True) && RightOf($b, orange, True) && RightOf($b, yellow, True) && RightOf($b, blue,   True)  >>> RightMost($b, True) ::: A book that is to the right of all the other four is the right‑most book.
-      RightMost($rm, True) && RightOf($rm, $s, True) && RightOf($s, white,  True) && RightOf($s, orange, True) && RightOf($s, yellow, True) >>> SecondFromRight($s, True) ::: The book immediately left of the right‑most—and still right of the remaining three—is second from the right.
-
-      Query:
-      SecondFromRight(white,  True)  ::: Option A
-      SecondFromRight(orange, True)  ::: Option B
-      SecondFromRight(yellow, True)  ::: Option C
-      SecondFromRight(blue,   True)  ::: Option D
-      SecondFromRight(red,    True)  ::: Option E
-    memory:
-      memory_type: chat_history
-    memory_manipulator:
-      memory_manipulator_type: basic
-    prompt_template: *prompt
-  -
-    agent_type: llm_eval_multi
     name: FOL translator
     final_prompt_to_use: |-
-      After discussion, now you need to give your final output.
       Please ensure that the output format has no syntax error, such as unclosed parentheses, etc.
       Return **only** Predicates, Premises, and Conclusion.
-    normal_turn_instruction: |-
-      Now it's your turn to speak. Please speak as concisely and clearly as possible, ${agent_name} !
     role_description: |-
        Task Description: Given a problem description and a question. The task is to parse the problem and the question into first-order logic formulas. The grammar of first-order logic is defined as follows:
 
@@ -196,71 +111,6 @@ agents:
         Rank(pears, three) ::: Option D
         Rank(watermelon, three) ::: Option E
         
-    memory:
-      memory_type: chat_history
-    memory_manipulator:
-      memory_manipulator_type: basic
-    prompt_template: *prompt
-
-  -
-    agent_type: llm_eval_multi
-    name: SAT translator
-    final_prompt_to_use: |-
-      After discussion, now you need to give your final output. 
-      Please ensure that the output format has no syntax error, such as unclosed parentheses, etc.
-      Return **only** the declarations, constraints, and options. 
-    normal_turn_instruction: |-
-      Now it's your turn to speak. Please speak as concisely and clearly as possible, ${agent_name} !
-    role_description: |-
-      Task Description: You are given a problem description.
-      The task is to parse the problem as a SAT problem using Z3 syntax, defining declarations, constraints, and options.
-        1. Always include all three section headers in order: # Declarations, # Constraints, # Options
-        2. Declarations must follow exact patterns:
-        - name = EnumSort([items, ...])  for non-numeric items
-        - name = IntSort([numbers, ...])  for numeric items
-        - name = Function([types] -> [return_type])
-        3. Constraints support:
-        - Direct expressions with ==, !=, <=, >=, <, >, Implies(), And(), Or(), Not()
-        - ForAll([var:type, ...], expr) and Exists([var:type, ...], expr)
-        - Count([var:type], condition)
-        - Distinct([var:type], expr)
-        4. Options must use predefined functions:
-        - is_valid(), is_sat(), is_unsat()
-        5. Add explanation with :::
-        6. Avoid:
-        - Add # in any other places apart from three section headers
-        - Add any other unnecessary comment or dashes
-
-      -----------
-      Example：
-      context: The following paragraphs each describe a set of five objects arranged in a fixed order. The statements are logically consistent within each paragraph.\n\nOn a shelf, there are five books: a white book, an orange book, a yellow book, a blue book, and a red book. The yellow book is to the left of the white book. The red book is to the right of the blue book. The yellow book is to the right of the orange book. The blue book is to the right of the white book.
-      question: Which of the following is true?
-      options: 
-            A) The white book is the second from the right.
-            B) The orange book is the second from the right.
-            C) The yellow book is the second from the right.
-            D) The blue book is the second from the right.
-            E) The red book is the second from the right.
-      
-      # Declarations
-      objects = EnumSort([White, Orange, Yellow, Blue, Red])
-      positions = IntSort([1, 2, 3, 4, 5])
-      pos = Function([objects] -> [positions])
-
-      # Constraints
-      Distinct([b:objects], pos(b)) ::: Each book occupies a unique position
-      pos(Yellow) < pos(White) ::: The yellow book is to the left of the white book.
-      pos(Red) > pos(Blue) ::: The red book is to the right of the blue book.
-      pos(Yellow) > pos(Orange) ::: The yellow book is to the right of the orange book.
-      pos(Blue) > pos(White) ::: The blue book is to the right of the white book.
-
-      # Options
-      is_valid(pos(White) == 4)  ::: A) The white book is the second from the right.
-      is_valid(pos(Orange) == 4)  ::: B) The orange book is the second from the right.
-      is_valid(pos(Yellow) == 4)  ::: C) The yellow book is the second from the right.
-      is_valid(pos(Blue) == 4)  ::: D) The blue book is the second from the right.
-      is_valid(pos(Red) == 4)  ::: E) The red book is the second from the right.
-
     memory:
       memory_type: chat_history
     memory_manipulator:
