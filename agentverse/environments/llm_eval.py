@@ -36,11 +36,11 @@ class LLMEvalEnvironment(BasicEnvironment):
         self.last_messages = selected_messages
         self.print_messages(selected_messages)
 
-        # Update the memory of the agents
-        self.rule.update_memory(self)
-
-        # Update the set of visible agents for each agent
+        # Update the set of visible agents for each agent (calculate gates first)
         self.rule.update_visible_agents(self)
+
+        # Update the memory of the agents (using the gates just calculated)
+        self.rule.update_memory(self)
 
         self.cnt_turn += 1
 

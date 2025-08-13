@@ -6,7 +6,10 @@
       "Bash(python:*)",
       "Bash(pip show:*)",
       "mcp__ide__executeCode",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(conda activate:*)",
+      "Bash(source:*)",
+      "Bash(conda info:*)"
     ],
     "deny": []
   }

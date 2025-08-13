@@ -7,7 +7,10 @@ from string import Template
 from pydantic import BaseModel, Field
 import logging
 import bdb
-from openai import RateLimitError
+try:
+    from openai import RateLimitError
+except ImportError:
+    from openai.error import RateLimitError
 
 
 from agentverse.message import Message

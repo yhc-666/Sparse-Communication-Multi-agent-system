@@ -1,91 +1,84 @@
-# Multi-Agent Debate System
+# Sparse Multi-Agent Debate System
 
-A multi-agent debate system built on the AgentVerse framework, designed to facilitate structured debates between AI agents with different roles and perspectives.
+A pipeline for logical reasoning through multi-agent debate with sparse communication.
 
-## Overview
-
-This system enables multiple AI agents to engage in structured debates on various topics. The agents are assigned different roles and personas, allowing them to present diverse viewpoints and engage in meaningful discussions. The system is particularly useful for exploring complex questions and analyzing problems from multiple angles.
-
-
-## Quick Start
-
-### Prerequisites
+## Prerequisites
 
 - Python 3.8+
-- Required packages listed in `requirements.txt`
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd <repository-name>
-```
-
-2. Install dependencies:
+- Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-境内需通过 `python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt` 安装
 
-3. Set up your API credentials inside `run_translate.py` and  `run_final_debate.py` and `run_llmsolver.py` (if using API mode):
-```bash
+## Pipeline Stages
+
+### 1. Translation (Natural Language → Symbolic Logic)
+
+Configure API credentials in `agentverse/tasks/nl_sl_translation/translate_config.yaml`:
+```python
 OPENAI_API_KEY="your_api_key_here"
 OPENAI_BASE_URL="your_api_base_url"
 ```
-4. Grant Permission for Prover9 SOlver: 
-```bash
-chmod +x solver_engine/src/symbolic_solvers/fol_solver/../Prover9/bin/*
-```
 
-### Basic Usage
-
-Note: config each session's .yaml accordingly
-
-1. Run a debate session for NL->SL translation:
-
-    Configure in `agentverse/tasks/nl_sl_translation/translate_config.yaml`
-
+Run translation:
 ```bash
 python run_translate.py
 ```
 
-2. Run LLM as Solver session to directly generate (answer, reasoning_path) and BACKUP ANSWER from NL
+### 2. Multi-Agent Debate
 
-    Configure in `agentverse/tasks/llm_as_solver/llm_solver_config.yaml` 
-
-```bash
-python run_llmsolver.py
+Configure API credentials in `agentverse/tasks/final_debate/sparse_debate_config.yaml`:
+```python
+OPENAI_API_KEY="your_api_key_here"
+OPENAI_BASE_URL="your_api_base_url"
 ```
 
+#### 2a. Debate WITHOUT Sparse Communication (Full Visibility)
 
-3. Run solver engine to generate (answer, reasoning_path) from SL
-
-    Configure in `solver_engine/symbolic_solver_config.yaml` 
-
-```bash
-python run_symbolicsolver.py 
+Edit `agentverse/tasks/final_debate/sparse_debate_config.yaml`:
+```yaml
+environment:
+  rule:
+    visibility:
+      type: all        # Change from "sparse" to "all"
+    updater:
+      type: basic      # Change from "sparse" to "basic"
 ```
 
-
-4. Run a debate session for final result
-
-    Configure in `agentverse/tasks/final_debate/final_debate_config.yaml`
-
+Run debate:
 ```bash
-python run_final_debate.py
+python run_sparse_debate.py
 ```
 
-5. Evaluation
+#### 2b. Debate WITH Sparse Communication (Selective Visibility)
 
-
-```bash
-python run_evaluation.py
+Edit `agentverse/tasks/final_debate/sparse_debate_config.yaml`:
+```yaml
+environment:
+  rule:
+    visibility:
+      type: sparse     # Use "sparse" for selective visibility
+      bert_model: "prajjwal1/bert-tiny"
+      lambda_param: 0.5
+    updater:
+      type: sparse     # Use "sparse" updater
 ```
 
-## ⚙️ Configuration
+Run debate:
+```bash
+python run_sparse_debate.py
+```
 
-The system is configured through YAML files.
+### 3. Final Evaluation
 
-### Key Configuration Sections
+Evaluate the debate results:
+```bash
+python run_evaluation.py --input_path outputs/sparse_debate/ProofWriter/sparse_debate_results.json --aggregation_strategy majority_vote
+```
 
+## Output
+
+Results are saved in:
+- Translation: `outputs/translation/ProofWriter/`
+- Debate: `outputs/sparse_debate/ProofWriter/`
+- Evaluation: Console output with accuracy metrics

@@ -44,8 +44,9 @@ class FinalDebateMultiAgent(LLMEvalAgent):
             StructuredPrompt with system_content and user_content split by ${chat_history}
         """
         # Determine turn-specific instruction based on current turn
-        if env and hasattr(env, 'cnt_turn') and hasattr(env, 'max_turns') and hasattr(env, 'agents'):
-            if env.cnt_turn < env.max_turns - len(env.agents):
+        if env and hasattr(env, 'cnt_turn') and hasattr(env, 'max_turns'):
+            # For concurrent execution: final turn is simply the last turn
+            if env.cnt_turn < env.max_turns - 1:
                 turn_specific_instruction = Template(self.normal_turn_instruction).safe_substitute(agent_name=self.name)
             else:
                 turn_specific_instruction = self.final_prompt_to_use
@@ -126,7 +127,8 @@ class FinalDebateMultiAgent(LLMEvalAgent):
 
     async def astep(self, env: Optional["BaseEnvironment"] = None, env_description: str = "") -> Message:
         """Override astep to save final_answer from parser"""
-        if env and env.cnt_turn >= env.max_turns - len(env.agents):
+        # For concurrent execution: check if this is the final turn
+        if env and env.cnt_turn >= env.max_turns - 1:
             self.final_prompt = self.final_prompt_to_use
 
         structured_prompt = self._fill_prompt_template(env_description, env)

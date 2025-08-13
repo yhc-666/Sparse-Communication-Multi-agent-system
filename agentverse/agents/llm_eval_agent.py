@@ -6,7 +6,10 @@ from string import Template
 from typing import TYPE_CHECKING, List
 
 from agentverse.message import Message
-from openai import RateLimitError
+try:
+    from openai import RateLimitError
+except ImportError:
+    from openai.error import RateLimitError
 
 from . import agent_registry
 from .base import BaseAgent

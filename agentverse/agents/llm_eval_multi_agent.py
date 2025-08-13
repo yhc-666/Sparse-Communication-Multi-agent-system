@@ -7,7 +7,11 @@ from string import Template
 from typing import TYPE_CHECKING, List
 
 from agentverse.message import Message, StructuredPrompt
-from openai import RateLimitError
+try:
+    from openai import RateLimitError
+except ImportError:
+    # For newer openai versions
+    from openai import APIError as RateLimitError
 
 from . import agent_registry
 from .base import BaseAgent
@@ -88,7 +92,8 @@ class LLMEvalAgent(BaseAgent):
         # Coherence:
         # Thought: (your thought)
 
-        if env.cnt_turn >= env.max_turns - len(env.agents):
+        # For concurrent execution: check if this is the final turn
+        if env.cnt_turn >= env.max_turns - 1:
             # self.final_prompt = "Now, please give your final judgement, and you must use the following format, first start with 'This is my final judgement!' and briefly give the thought on why you give this rate, then finally give the rate of the summary of the above 4 aspects." \
             #                     "This is my final judgement!\n" \
             #                     "Thought: (your thought)\n" \
@@ -157,8 +162,9 @@ class LLMEvalAgent(BaseAgent):
         - user_content: ${chat_history}之后的部分
         """
         # Determine turn-specific instruction based on current turn
-        if env and hasattr(env, 'cnt_turn') and hasattr(env, 'max_turns') and hasattr(env, 'agents'):
-            if env.cnt_turn < env.max_turns - len(env.agents):
+        if env and hasattr(env, 'cnt_turn') and hasattr(env, 'max_turns'):
+            # For concurrent execution: final turn is simply the last turn
+            if env.cnt_turn < env.max_turns - 1:
                 turn_specific_instruction = Template(self.normal_turn_instruction).safe_substitute(agent_name=self.name)
             else:
                 turn_specific_instruction = self.final_prompt

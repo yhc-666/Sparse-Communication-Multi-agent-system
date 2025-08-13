@@ -23,7 +23,7 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser()
 
-parser.add_argument("--config", type=str, default="agentverse/tasks/nl_sl_translation/logideduct_translate_config.yaml")
+parser.add_argument("--config", type=str, default="agentverse/tasks/nl_sl_translation/translate_config.yaml")
 parser.add_argument("--reverse_input", default=False, action="store_true")
 
 

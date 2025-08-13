@@ -170,7 +170,7 @@ class OpenAIChat(BaseChatModel):
     async def agenerate_response(self, structured_prompt: "StructuredPrompt", chat_memory: List[Message]) -> LLMResult:
         messages = self._construct_messages(structured_prompt, chat_memory)
         
-        #io_logger.info("➡️Input Messages JSON:\n%s", json.dumps(messages, ensure_ascii=False, indent=2))
+        io_logger.info("➡️Input Messages JSON:\n%s", json.dumps(messages, ensure_ascii=False, indent=2))
         
         try:
             response = await get_async_client().chat.completions.create(messages=messages, **self.args.dict())
@@ -179,10 +179,10 @@ class OpenAIChat(BaseChatModel):
         
         result_content = response.choices[0].message.content
         
-        # io_logger.info("↩️ LLM Response:\n%s", json.dumps({
-        #    "response": result_content
+        io_logger.info("↩️ LLM Response:\n%s", json.dumps({
+           "response": result_content
             
-        # }, ensure_ascii=False, indent=2))
+        }, ensure_ascii=False, indent=2))
         
         return LLMResult(
             content=result_content,

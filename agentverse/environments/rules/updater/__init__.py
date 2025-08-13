@@ -4,4 +4,5 @@ updater_registry = Registry(name="UpdaterRegistry")
 
 from .base import BaseUpdater
 from .basic import BasicUpdater
+from .sparse import SparseUpdater
 
