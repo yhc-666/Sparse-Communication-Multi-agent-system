@@ -126,6 +126,12 @@ def evaluate_final_debate(json_path, aggregation_strategy='last_speaker'):
     error_count = 0
     tie_count = 0  # For majority vote ties
     
+    # Token usage and sparse rate tracking
+    total_prefilling_tokens = 0
+    questions_with_tokens = 0
+    sparse_rates = []
+    questions_with_sparse_rate = 0
+    
     print(f"Starting evaluation of {total_count} questions using '{aggregation_strategy}' strategy...")
     
     for item in tqdm(data, desc="Evaluating"):
@@ -154,6 +160,23 @@ def evaluate_final_debate(json_path, aggregation_strategy='last_speaker'):
             if normalized_gold == predicted_answer:
                 correct_count += 1
             
+            # Track token usage if available
+            if 'token_usage' in item:
+                token_data = item['token_usage']
+                if 'total_prefilling_tokens' in token_data:
+                    prefilling = token_data['total_prefilling_tokens']
+                    if prefilling > 0:
+                        total_prefilling_tokens += prefilling
+                        questions_with_tokens += 1
+            
+            # Track sparse rate if available
+            if 'gate_statistics' in item:
+                gate_stats = item['gate_statistics']
+                if 'cumulative_sparse_rate' in gate_stats:
+                    sparse_rate = gate_stats['cumulative_sparse_rate']
+                    sparse_rates.append(sparse_rate)
+                    questions_with_sparse_rate += 1
+            
         except Exception as e:
             print(f"Error processing question {item.get('id', 'unknown')}: {e}")
             error_count += 1
@@ -177,6 +200,27 @@ def evaluate_final_debate(json_path, aggregation_strategy='last_speaker'):
     if aggregation_strategy == 'majority_vote' and tie_count > 0:
         print(f"Tie cases (no clear majority): {tie_count}")
     print(f"Overall accuracy: {accuracy:.2%}")
+    
+    # Display token usage statistics if available
+    if questions_with_tokens > 0:
+        avg_prefilling = total_prefilling_tokens / questions_with_tokens
+        print(f"\n{'='*50}")
+        print(f"TOKEN USAGE STATISTICS")
+        print(f"{'='*50}")
+        print(f"Questions with token data: {questions_with_tokens}")
+        print(f"Total prefilling tokens: {total_prefilling_tokens:,}")
+        print(f"Average prefilling tokens per question: {avg_prefilling:,.1f}")
+    
+    # Display sparse rate statistics if available
+    if questions_with_sparse_rate > 0:
+        avg_sparse_rate = sum(sparse_rates) / len(sparse_rates)
+        print(f"\n{'='*50}")
+        print(f"SPARSE COMMUNICATION STATISTICS")
+        print(f"{'='*50}")
+        print(f"Questions with sparse data: {questions_with_sparse_rate}")
+        print(f"Average sparse rate per question: {avg_sparse_rate:.2%}")
+        print(f"(Sparse rate = proportion of closed gates)")
+    
     print(f"{'='*50}")
     
     return accuracy

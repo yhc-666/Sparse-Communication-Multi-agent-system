@@ -1,0 +1,210 @@
+task:
+  final_debate
+
+# Data path (required by AgentVerse)
+data_path:
+  outputs/translation/ProofWriter/translation_results.json
+  
+# Input/Output paths
+translation_results_path:
+  outputs/translation/ProofWriter/translation_results.json
+output_dir:
+  outputs/regular_debate/ProofWriter
+
+prompts:
+  # ${chat_history} 之前的放在system, 之后的放在user
+  prompt: &prompt |-
+    You are given a logic problem and its First-Order Logic (FOL) translation:
+    
+    Context: ${context}
+    Question: ${question}
+    Options: ${options}
+    
+    FOL Translation:
+    ${reasoning}
+    
+    ${role_description}
+    
+    Previous discussion history:
+    ${chat_history}
+    ${turn_specific_instruction}
+
+# LLM Configuration
+llm_config:
+  mode: 'api'
+  
+  api_credentials:
+    openai_api_key: "sk-733e47bc35da4b49b0bc7ca99ede48f8"
+    openai_base_url: "https://api.deepseek.com/v1"
+  
+  api_settings:
+    model: "deepseek-chat"
+    llm_type: "deepseek-chat"
+    temperature: 0.7
+    max_tokens: 1250
+    max_retry: 2
+
+environment:
+  env_type: llm_eval
+  max_turns: 4  # D rounds of communication (reduced for quick testing)
+  rule:
+    order:
+      type: concurrent  # All agents speak simultaneously
+    visibility:
+      type: all  # All agents can see all messages
+    selector:
+      type: basic  # Keep basic selector
+    updater:
+      type: basic  # Use basic updater
+    describer:
+      type: basic  # Keep basic describer
+
+output_parser:
+  parser_type: "final_debate"
+
+agents:
+  # FOL Agent 1
+  -
+    agent_type: final_debate_multi
+    name: FOL Agent 1
+    final_prompt_to_use: |-
+      This is the final round. Based on all the discussion, provide your final answer.
+      Return **only** your answer in the format:
+      <answer>YOUR_CHOSEN_OPTION</answer>
+    normal_turn_instruction: |-
+      Engage actively in this logical debate. Structure your response as follows:
+      
+      1. MY CLAIM: State your answer with specific FOL evidence
+         - Cite exact premises/rules from the FOL translation that support your position
+      
+      2. EXAMINING OTHERS FROM PREVIOUS TURN: (check agents' responses from last round)
+         - Review what other agents argued in the previous turn
+         - For each agent whose previous response you can see, either:
+           * CHALLENGE their reasoning by pointing out logical flaws using FOL counter-evidence
+           * SUPPORT their argument with additional FOL proofs
+           * ACKNOWLEDGE if their evidence is stronger than yours
+         - Note: Due to concurrent speaking, you can only see messages from previous rounds, not the current round
+      
+      3. MY STANCE: 
+         - MAINTAIN your original position with reasoning, OR
+         - REVISE your position if counter-evidence is compelling
+      
+      Format:
+      Claim: [Your answer] because [cite specific FOL premises/rules]
+      
+      Response to Previous Turn:
+      - @[Agent Name] (from last round): I [challenge/support] because [specific FOL evidence]
+      
+      Final Answer: [A/B/C/D/E]
+      Confidence: [0.0-1.0, adjust based on strength of evidence and debate]
+    role_description: |-
+      You are FOL Agent 1, a meticulous logical analyzer who:
+      - Always cites specific FOL premises and rules as evidence
+      - Carefully examines logical validity and soundness
+      - Challenges unsupported claims with counter-examples from the FOL translation
+      - Supports well-reasoned arguments with additional logical connections
+      - Willing to revise your position when presented with stronger FOL proofs
+      Focus on: Logical rigor and formal proof structures
+    memory:
+      memory_type: chat_history
+    memory_manipulator:
+      memory_manipulator_type: basic
+    prompt_template: *prompt
+    
+  # FOL Agent 2
+  -
+    agent_type: final_debate_multi
+    name: FOL Agent 2
+    final_prompt_to_use: |-
+      This is the final round. Based on all the discussion, provide your final answer.
+      Return **only** your answer in the format:
+      <answer>YOUR_CHOSEN_OPTION</answer>
+    normal_turn_instruction: |-
+      Engage actively in this logical debate. Structure your response as follows:
+      
+      1. MY CLAIM: State your answer with specific FOL evidence
+         - Cite exact premises/rules from the FOL translation that support your position
+      
+      2. EXAMINING OTHERS FROM PREVIOUS TURN: (check agents' responses from last round)
+         - Review what other agents argued in the previous turn
+         - For each agent whose previous response you can see, either:
+           * CHALLENGE their reasoning by pointing out logical flaws using FOL counter-evidence
+           * SUPPORT their argument with additional FOL proofs
+           * ACKNOWLEDGE if their evidence is stronger than yours
+         - Note: Due to concurrent speaking, you can only see messages from previous rounds, not the current round
+      
+      3. MY STANCE: 
+         - MAINTAIN your original position with reasoning, OR
+         - REVISE your position if counter-evidence is compelling
+      
+      Format:
+      Claim: [Your answer] because [cite specific FOL premises/rules]
+      
+      Response to Previous Turn:
+      - @[Agent Name] (from last round): I [challenge/support] because [specific FOL evidence]
+      
+      Final Answer: [A/B/C/D/E]
+      Confidence: [0.0-1.0, adjust based on strength of evidence and debate]
+    role_description: |-
+      You are FOL Agent 2, a critical logical examiner who:
+      - Tests edge cases and looks for logical gaps
+      - Questions whether FOL translations fully capture the problem
+      - Challenges overly confident claims by finding exceptions in the rules
+      - Supports arguments that handle all cases properly
+      - Adjusts confidence based on how well arguments address edge cases
+      Focus on: Completeness and edge case analysis
+    memory:
+      memory_type: chat_history
+    memory_manipulator:
+      memory_manipulator_type: basic
+    prompt_template: *prompt
+    
+  # FOL Agent 3
+  -
+    agent_type: final_debate_multi
+    name: FOL Agent 3
+    final_prompt_to_use: |-
+      This is the final round. Based on all the discussion, provide your final answer.
+      Return **only** your answer in the format:
+      <answer>YOUR_CHOSEN_OPTION</answer>
+    normal_turn_instruction: |-
+      Engage actively in this logical debate. Structure your response as follows:
+      
+      1. MY CLAIM: State your answer with specific FOL evidence
+         - Cite exact premises/rules from the FOL translation that support your position
+      
+      2. EXAMINING OTHERS FROM PREVIOUS TURN: (check agents' responses from last round)
+         - Review what other agents argued in the previous turn
+         - For each agent whose previous response you can see, either:
+           * CHALLENGE their reasoning by pointing out logical flaws using FOL counter-evidence
+           * SUPPORT their argument with additional FOL proofs
+           * ACKNOWLEDGE if their evidence is stronger than yours
+         - Note: Due to concurrent speaking, you can only see messages from previous rounds, not the current round
+      
+      3. MY STANCE: 
+         - MAINTAIN your original position with reasoning, OR
+         - REVISE your position if counter-evidence is compelling
+      
+      Format:
+      Claim: [Your answer] because [cite specific FOL premises/rules]
+      
+      Response to Previous Turn:
+      - @[Agent Name] (from last round): I [challenge/support] because [specific FOL evidence]
+      
+      Final Answer: [A/B/C/D/E]
+      Confidence: [0.0-1.0, adjust based on strength of evidence and debate]
+    role_description: |-
+      You are FOL Agent 3, a synthesis-oriented reasoner who:
+      - Looks for consensus and contradictions between arguments
+      - Challenges inconsistent reasoning across agents
+      - Supports arguments that align with multiple FOL rules
+      - Builds bridges between different valid interpretations
+      - Revises position based on the weight of collective evidence
+      Focus on: Synthesis and consistency across arguments
+    memory:
+      memory_type: chat_history
+    memory_manipulator:
+      memory_manipulator_type: basic
+    prompt_template: *prompt
+
+tools: ~

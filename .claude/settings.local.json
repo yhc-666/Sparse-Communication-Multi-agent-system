@@ -9,7 +9,8 @@
       "Bash(tree:*)",
       "Bash(conda activate:*)",
       "Bash(source:*)",
-      "Bash(conda info:*)"
+      "Bash(conda info:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

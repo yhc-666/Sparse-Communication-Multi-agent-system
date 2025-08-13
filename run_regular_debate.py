@@ -57,8 +57,7 @@ def assign_translation_to_agents(agentverse, instance: Dict) -> None:
 def extract_chat_history(agentverse) -> List[Dict]:
     """
     Extract complete chat history from all agents.
-    Since each agent has different memory due to sparse gates,
-    we collect from all agents to get the complete picture.
+    In regular debate, all agents see all messages.
     
     Args:
         agentverse: The AgentVerse instance
@@ -169,65 +168,20 @@ def collect_final_predictions(agents) -> Dict:
     return final_predictions
 
 
-def extract_gate_history(visibility_rule) -> Dict:
-    """
-    Extract gate matrices history from sparse visibility rule.
-    
-    Args:
-        visibility_rule: The sparse visibility rule instance
-        
-    Returns:
-        Dictionary with gate history and statistics
-    """
-    if not hasattr(visibility_rule, 'gates'):
-        return {}
-    
-    gate_history = {}
-    
-    for round_num, gates in visibility_rule.gates.items():
-        n_agents = gates.shape[0]
-        # Convert numpy array to list for JSON serialization
-        # Add 1 to round_num for human-readable display (Round 1, Round 2, etc.)
-        gate_history[f"round_{round_num + 1}"] = {
-            "gates": gates.tolist(),
-            "open_gates": int(np.sum(gates) - n_agents),  # Exclude self-connections
-            "total_gates": n_agents * (n_agents - 1),
-            "sparsity": float(1 - (np.sum(gates) - n_agents) / (n_agents * (n_agents - 1)))
-        }
-    
-    # Add cumulative sparse rate
-    if hasattr(visibility_rule, 'get_cumulative_sparse_rate'):
-        gate_history["cumulative_sparse_rate"] = visibility_rule.get_cumulative_sparse_rate()
-        gate_history["cumulative_open_gates"] = visibility_rule.cumulative_open_gates
-        gate_history["cumulative_total_gates"] = visibility_rule.cumulative_total_gates
-    
-    # Add confidence history if available
-    if hasattr(visibility_rule, 'confidences'):
-        confidence_history = {}
-        for round_num, confidences in visibility_rule.confidences.items():
-            # Add 1 to round_num for human-readable display
-            confidence_history[f"round_{round_num + 1}"] = {
-                f"agent_{i}": conf for i, conf in confidences.items()
-            }
-        gate_history["confidences"] = confidence_history
-    
-    return gate_history
-
-
 def main():
-    """Main execution function for sparse debate"""
+    """Main execution function for regular debate (without sparse communication)"""
     parser = ArgumentParser()
     parser.add_argument("--config", type=str, 
-                       default="agentverse/tasks/final_debate/sparse_debate_config.yaml",
-                       help="Path to sparse debate configuration file")
-    parser.add_argument("--max_instances", type=int, default=0,
+                       default="agentverse/tasks/final_debate/final_debate_config.yaml",
+                       help="Path to regular debate configuration file")
+    parser.add_argument("--max_instances", type=int, default=10,
                        help="Maximum number of instances to process (0 for all)")
     parser.add_argument("--start_from", type=int, default=0,
                        help="Start processing from this instance index")
     args = parser.parse_args()
     
     print("=" * 50)
-    print("Starting Sparse Communication Debate")
+    print("Starting Regular Debate (Full Communication)")
     print("=" * 50)
     
     # Load configuration
@@ -235,7 +189,7 @@ def main():
         config = yaml.safe_load(f)
     
     # Initialize AgentVerse
-    print("\n📋 Initializing AgentVerse with sparse communication...")
+    print("\n📋 Initializing AgentVerse with full communication...")
     agentverse, _, _ = AgentVerse.from_task(args.config)
     
     # Load translation results
@@ -249,7 +203,7 @@ def main():
     print(f"\n📊 Processing instances {args.start_from} to {end_idx-1} ({len(instances_to_process)} total)")
     
     # Prepare output
-    sparse_debate_output = []
+    regular_debate_output = []
     output_dir = config['output_dir']
     
     # Process each instance
@@ -261,8 +215,8 @@ def main():
             # Assign translation to agents
             assign_translation_to_agents(agentverse, instance)
             
-            # Run sparse debate
-            print("Running sparse debate...")
+            # Run regular debate
+            print("Running regular debate...")
             agentverse.run()
             
             # Extract results
@@ -272,12 +226,7 @@ def main():
             # Extract token usage
             token_usage = extract_token_usage(agentverse.agents)
             
-            # Extract gate history from visibility rule
-            gate_history = {}
-            if hasattr(agentverse.environment.rule, 'visibility'):
-                gate_history = extract_gate_history(agentverse.environment.rule.visibility)
-            
-            # Compile result
+            # Compile result (no gate statistics for regular debate)
             result = {
                 "id": instance.get("id", f"instance_{actual_idx}"),
                 "context": instance.get("context", ""),
@@ -287,16 +236,15 @@ def main():
                 "translation": instance.get("translation", {}),
                 "chat_history": chat_history,
                 "Final predictions": final_predictions,
-                "token_usage": token_usage,
-                "gate_statistics": gate_history
+                "token_usage": token_usage
             }
             
-            sparse_debate_output.append(result)
+            regular_debate_output.append(result)
             
             # Save intermediate results
             os.makedirs(output_dir, exist_ok=True)
-            with open(os.path.join(output_dir, "sparse_debate_results.json"), "w", encoding='utf-8') as f:
-                json.dump(sparse_debate_output, f, indent=2, ensure_ascii=False)
+            with open(os.path.join(output_dir, "regular_debate_results.json"), "w", encoding='utf-8') as f:
+                json.dump(regular_debate_output, f, indent=2, ensure_ascii=False)
             
             print(f"✅ Instance {actual_idx} completed")
             
@@ -306,7 +254,7 @@ def main():
             traceback.print_exc()
             
             # Add error result
-            sparse_debate_output.append({
+            regular_debate_output.append({
                 "id": instance.get("id", f"instance_{actual_idx}"),
                 "error": str(e)
             })
@@ -315,54 +263,30 @@ def main():
             # Reset agents for next instance
             for agent in agentverse.agents:
                 agent.reset()
-            # Reset visibility rule
-            if hasattr(agentverse.environment.rule, 'visibility'):
-                agentverse.environment.rule.visibility.reset()
     
     # Final summary
     print("\n" + "=" * 50)
-    print("SPARSE DEBATE SUMMARY")
+    print("REGULAR DEBATE SUMMARY")
     print("=" * 50)
-    print(f"Total instances processed: {len(sparse_debate_output)}")
-    print(f"Results saved to: {os.path.join(output_dir, 'sparse_debate_results.json')}")
+    print(f"Total instances processed: {len(regular_debate_output)}")
+    print(f"Results saved to: {os.path.join(output_dir, 'regular_debate_results.json')}")
     
-    # Calculate average sparsity and token usage
-    total_sparsity = []
-    cumulative_sparse_rates = []
+    # Calculate average token usage
     total_prefilling_tokens = 0
     
-    for result in sparse_debate_output:
-        # Collect sparsity data
-        if "gate_statistics" in result:
-            # Collect per-round sparsity
-            for round_key, round_stats in result["gate_statistics"].items():
-                if round_key.startswith("round_") and "sparsity" in round_stats:
-                    total_sparsity.append(round_stats["sparsity"])
-            
-            # Collect cumulative sparse rate
-            if "cumulative_sparse_rate" in result["gate_statistics"]:
-                cumulative_sparse_rates.append(result["gate_statistics"]["cumulative_sparse_rate"])
-        
+    for result in regular_debate_output:
         # Collect token usage
         if "token_usage" in result:
             total_prefilling_tokens += result["token_usage"].get("total_prefilling_tokens", 0)
     
-    if total_sparsity:
-        avg_sparsity = np.mean(total_sparsity)
-        print(f"Average per-round sparsity: {avg_sparsity:.2%}")
-    
-    if cumulative_sparse_rates:
-        avg_cumulative_sparse_rate = np.mean(cumulative_sparse_rates)
-        print(f"Average cumulative sparse rate per question: {avg_cumulative_sparse_rate:.2%}")
-    
     if total_prefilling_tokens > 0:
-        avg_prefilling_per_question = total_prefilling_tokens / len(sparse_debate_output)
+        avg_prefilling_per_question = total_prefilling_tokens / len(regular_debate_output)
         print(f"Total prefilling tokens: {total_prefilling_tokens:,}")
         print(f"Average prefilling tokens per question: {avg_prefilling_per_question:,.0f}")
     
-    print("\n✅ Sparse debate completed successfully!")
+    print("\n✅ Regular debate completed successfully!")
     print(f"You can now run evaluation using:")
-    print(f"python run_evaluation.py --input_path {os.path.join(output_dir, 'sparse_debate_results.json')} --aggregation_strategy majority_vote")
+    print(f"python run_evaluation.py --input_path {os.path.join(output_dir, 'regular_debate_results.json')} --aggregation_strategy majority_vote")
 
 
 if __name__ == "__main__":

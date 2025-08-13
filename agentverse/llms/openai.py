@@ -45,6 +45,10 @@ except ImportError:
     client = None
     aclient = None
     
+    # Define a dummy OpenAIError for when openai is not available
+    class OpenAIError(Exception):
+        pass
+    
     def get_client():
         return None
     
@@ -179,16 +183,24 @@ class OpenAIChat(BaseChatModel):
         
         result_content = response.choices[0].message.content
         
+        # Log token usage for debugging
+        token_info = {
+            "prompt_tokens": response.usage.prompt_tokens if hasattr(response, 'usage') else 0,
+            "completion_tokens": response.usage.completion_tokens if hasattr(response, 'usage') else 0,
+            "total_tokens": response.usage.total_tokens if hasattr(response, 'usage') else 0
+        }
+        
         io_logger.info("↩️ LLM Response:\n%s", json.dumps({
-           "response": result_content
+           "response": result_content,
+           "token_usage": token_info
             
         }, ensure_ascii=False, indent=2))
         
         return LLMResult(
             content=result_content,
-            send_tokens=response.usage.prompt_tokens,
-            recv_tokens=response.usage.completion_tokens,
-            total_tokens=response.usage.total_tokens,
+            send_tokens=response.usage.prompt_tokens if hasattr(response, 'usage') else 0,
+            recv_tokens=response.usage.completion_tokens if hasattr(response, 'usage') else 0,
+            total_tokens=response.usage.total_tokens if hasattr(response, 'usage') else 0,
         )
 
 

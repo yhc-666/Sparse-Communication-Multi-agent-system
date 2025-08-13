@@ -32,6 +32,9 @@ class SparseVisibility(BaseVisibility):
     current_preferences: Dict[int, Any] = Field(default_factory=dict)  # Pre_ij for each round
     historical_preferences: Dict[int, Any] = Field(default_factory=dict)  # Pre_ij_hat for each round
     agent_name_to_idx: Dict[str, int] = Field(default_factory=dict)
+    # Cumulative statistics
+    cumulative_total_gates: int = Field(default=0)
+    cumulative_open_gates: int = Field(default=0)
     
     def __init__(self, bert_model: str = "prajjwal1/bert-tiny", lambda_param: float = 0.5, **kwargs):
         """
@@ -228,6 +231,20 @@ class SparseVisibility(BaseVisibility):
         open_gates = np.sum(self.gates[round]) - n_agents  # Exclude self-connections
         total_gates = n_agents * (n_agents - 1)
         logging.info(f"Round {round}: {open_gates}/{total_gates} gates open ({100*open_gates/total_gates:.1f}%)")
+        
+        # Update cumulative statistics
+        self.cumulative_total_gates += total_gates
+        self.cumulative_open_gates += int(open_gates)
+    
+    def get_cumulative_sparse_rate(self) -> float:
+        """Calculate the cumulative sparse rate across all rounds.
+        
+        Returns:
+            Sparse rate (proportion of closed gates): 1 - (open gates / total gates)
+        """
+        if self.cumulative_total_gates == 0:
+            return 0.0
+        return 1 - (self.cumulative_open_gates / self.cumulative_total_gates)
     
     def reset(self) -> None:
         """Reset visibility state for new instance"""
@@ -237,3 +254,6 @@ class SparseVisibility(BaseVisibility):
         self.current_preferences.clear()
         self.historical_preferences.clear()
         self.agent_name_to_idx.clear()
+        # Reset cumulative statistics
+        self.cumulative_total_gates = 0
+        self.cumulative_open_gates = 0

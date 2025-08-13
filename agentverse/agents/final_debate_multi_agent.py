@@ -100,6 +100,19 @@ class FinalDebateMultiAgent(LLMEvalAgent):
         for i in range(self.max_retry):
             try:
                 response = self.llm.generate_response(structured_prompt, self.memory.messages)
+                
+                # Track token usage
+                if hasattr(response, 'send_tokens'):
+                    round_tokens = {
+                        "send_tokens": response.send_tokens,
+                        "recv_tokens": response.recv_tokens,
+                        "total_tokens": response.total_tokens
+                    }
+                    self.token_usage["total_send_tokens"] += response.send_tokens
+                    self.token_usage["total_recv_tokens"] += response.recv_tokens
+                    self.token_usage["total_tokens"] += response.total_tokens
+                    self.token_usage["rounds"].append(round_tokens)
+                
                 parsed_response = self.output_parser.parse(response)
                 break
             except KeyboardInterrupt:
@@ -140,6 +153,19 @@ class FinalDebateMultiAgent(LLMEvalAgent):
             for i in range(self.max_retry):
                 try:
                     response = await self.llm.agenerate_response(structured_prompt, self.memory.messages)
+                    
+                    # Track token usage
+                    if hasattr(response, 'send_tokens'):
+                        round_tokens = {
+                            "send_tokens": response.send_tokens,
+                            "recv_tokens": response.recv_tokens,
+                            "total_tokens": response.total_tokens
+                        }
+                        self.token_usage["total_send_tokens"] += response.send_tokens
+                        self.token_usage["total_recv_tokens"] += response.recv_tokens
+                        self.token_usage["total_tokens"] += response.total_tokens
+                        self.token_usage["rounds"].append(round_tokens)
+                    
                     if env:
                         parsed_response = self.output_parser.parse(response, env.cnt_turn, env.max_turns, len(env.agents))
                     else:

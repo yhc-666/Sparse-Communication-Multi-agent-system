@@ -4,8 +4,9 @@ import logging
 import bdb
 import re
 from string import Template
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Dict
 
+from pydantic import Field
 from agentverse.message import Message, StructuredPrompt
 try:
     from openai import RateLimitError
@@ -38,6 +39,14 @@ class LLMEvalAgent(BaseAgent):
     final_prompt: str = ""
     final_prompt_to_use: str = ""
     normal_turn_instruction: str = ""
+    
+    # Token tracking field
+    token_usage: Dict = Field(default_factory=lambda: {
+        "total_send_tokens": 0,
+        "total_recv_tokens": 0,
+        "total_tokens": 0,
+        "rounds": []
+    })
 
     def _clean_output(self, text: str) -> str:
         """Clean the output text similar to output_parser.py"""
@@ -54,6 +63,19 @@ class LLMEvalAgent(BaseAgent):
         for i in range(self.max_retry):
             try:
                 response = self.llm.generate_response(structured_prompt, self.memory.messages)
+                
+                # Track token usage
+                if hasattr(response, 'send_tokens'):
+                    round_tokens = {
+                        "send_tokens": response.send_tokens,
+                        "recv_tokens": response.recv_tokens,
+                        "total_tokens": response.total_tokens
+                    }
+                    self.token_usage["total_send_tokens"] += response.send_tokens
+                    self.token_usage["total_recv_tokens"] += response.recv_tokens
+                    self.token_usage["total_tokens"] += response.total_tokens
+                    self.token_usage["rounds"].append(round_tokens)
+                
                 parsed_response = self.output_parser.parse(response, 0, 10, 1, self.name)
                 break
             except KeyboardInterrupt:
@@ -114,6 +136,19 @@ class LLMEvalAgent(BaseAgent):
             for i in range(self.max_retry):
                 try:
                     response = await self.llm.agenerate_response(structured_prompt, self.memory.messages)
+                    
+                    # Track token usage
+                    if hasattr(response, 'send_tokens'):
+                        round_tokens = {
+                            "send_tokens": response.send_tokens,
+                            "recv_tokens": response.recv_tokens,
+                            "total_tokens": response.total_tokens
+                        }
+                        self.token_usage["total_send_tokens"] += response.send_tokens
+                        self.token_usage["total_recv_tokens"] += response.recv_tokens
+                        self.token_usage["total_tokens"] += response.total_tokens
+                        self.token_usage["rounds"].append(round_tokens)
+                    
                     parsed_response = self.output_parser.parse(response, env.cnt_turn, env.max_turns, len(env.agents), self.name)
                     should_break = True
                     break
@@ -221,4 +256,11 @@ class LLMEvalAgent(BaseAgent):
     def reset(self) -> None:
         """Reset the agent"""
         self.memory.reset()
+        # Reset token usage tracking
+        self.token_usage = {
+            "total_send_tokens": 0,
+            "total_recv_tokens": 0,
+            "total_tokens": 0,
+            "rounds": []
+        }
         # TODO: reset receiver
